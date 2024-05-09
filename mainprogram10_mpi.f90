@@ -21,7 +21,8 @@ program thermalcloak
    !fem関連の変数(要素、節点など)の定義
    integer,parameter :: nd=3
    integer,parameter :: Number_Node=(nelx+1)*(nely+1)
-   integer Number_Node_for_fem!断熱領域の中にある節点を除いた値
+   integer Number_nonzero,Number_Node_for_fem!断熱領域の中にある節点を除いた値
+   integer,parameter :: Width_Matrix_LHS=7 !g_matrixにおいて一行の中に値が代入された成分の数の最大値(有限要素不規則分布の場合はmaxelementshareonenode+1)
    integer,parameter :: Number_Element=nelx*nely*2
    integer,parameter :: Number_SElement=nelx*nely
    integer Number_EDesignArea,Number_SEDesignArea,Number_Eins,Number_SEins
@@ -44,6 +45,8 @@ program thermalcloak
    integer Best_Objective_function_Loc,Best_Objective_function_Loc_Temp
    integer Number_matrix_design_variable
    real(8),parameter :: t_flat=1.0d0
+   real(8),parameter :: t_boundary_higher_side=1.0d0
+   real(8),parameter :: t_boundary_lower_side=0.0d0
    real(8) psi_n,psi!目的関数計算用
    real(8) :: objective_function_average,objective_function_pre,Best_Objective_function
 !============================================================================================
@@ -63,15 +66,14 @@ program thermalcloak
 
 !============================================================================================
    !fem関連配列
-   integer :: nodex(Number_Element,nd),nodex_s(Number_SElement,4),eid(Number_Element)
+   integer :: nodex(nd,Number_Element),nodex_s(4,Number_SElement),eid(Number_Element)
    integer :: SElement_coordinate(Number_SElement,Number_SElement),Reverse_SElement_coordinate(nelx,nely)
    integer :: Number_Node_for_fem_count(Number_Node)
    integer,allocatable :: g_matrix2_id(:)
    integer,allocatable :: SElement_Design_Area(:),SElement_Design_Area_quarter(:,:)
-   real(8) :: xcoord(Number_Node),ycoord(Number_Node),T_rhs(Number_Node),ipmkl_0(Number_Node)
-   real(8) :: l_matrix(nd,nd),g_matrix(Number_Node,Number_Node)
+   real(8) :: xcoord(Number_Node),ycoord(Number_Node),T_rhs(Number_Node)
+   real(8) :: l_matrix(nd,nd,Number_Element),g_matrix(Number_Node,Number_Node)
    real(8) :: nec(Number_Element,2),nesc(Number_SElement,2)
-   real(8),allocatable :: g_matrix2(:,:),rhs2(:),ipmkl(:)
 !============================================================================================
 
 !============================================================================================
@@ -126,7 +128,7 @@ program thermalcloak
     write(*,*) 'generate finite element complete'
    !======================================================
     flat_nodex=reshape(nodex,[size_flat_nodex])
-  end if
+   end if
    !==========================================================================================
    !broadcast data
     call MPI_BCAST(xcoord,Number_Node,MPI_DOUBLE,0,MPI_COMM_WORLD,ierr)
@@ -142,7 +144,7 @@ program thermalcloak
   
 !============================================================================================= 
   if(process_id/=0) then
-    nodex=reshape(flat_nodex,[Number_Element,nd])
+    nodex=reshape(flat_nodex,[nd,Number_Element])
   end if
 !=============================================================================================
 
@@ -174,7 +176,7 @@ program thermalcloak
     do j=1,nd
       do i=1,Number_Element
         if(eid(i)/=2)then
-         Number_Node_for_fem_count(nodex(i,j))=1
+         Number_Node_for_fem_count(nodex(j,i))=1
         end if
       end do
     end do
@@ -200,63 +202,42 @@ call MPI_BCAST(Number_Node_for_fem,1,MPI_INT,0,MPI_COMM_WORLD,ierr)
 call MPI_Barrier(MPI_COMM_WORLD,ierr)
 !============================================================================================
 
-   allocate(g_matrix2(Number_Node_for_fem,Number_Node_for_fem),rhs2(Number_Node_for_fem),ipmkl(Number_Node_for_fem))
-   allocate(g_matrix2_id(Number_Node_for_fem))
-
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ! Cauculate T-reference
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   if(process_id==0) then 
    !======================================================== 
-    write(*,*)'Making Global Matrix'
+    write(*,*)'Making local Matrix'
    !========================================================
-    call mkGSM_0 ( nd,Number_Element,Number_Node,nodex,xcoord,ycoord,g_matrix)
-   !======================================================== 
-    write(*,*)'Set boundary conditions'
-   !========================================================
-    call setBC_0(Number_Element,Number_Node,nd,xcoord,ycoord,g_matrix,T_ref,mnx,mxx,mny,mxy) 
+    call mkLSM_0 (ND,Number_Element,Number_Node,eid,NODEX,XCOORD,YCOORD,l_matrix)
    !===================================================================================
     write(*,*)'Solving Linear Equation' 
    !===================================================================================
-    call dgesv(Number_Node,1,g_matrix,Number_Node,ipmkl_0,T_ref,Number_Node,info)
+    call analyze_thermal_distribution(l_matrix, nodex, eid, &
+           1, Number_Node, Number_Element, Width_Matrix_LHS, &
+           xcoord, ycoord, t_boundary_higher_side, t_boundary_lower_side, &
+           mxx,mxy,mnx,mny, &
+           !===========================================================================
+           T_ref)
    
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ! Cauculate T-bare
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    !===================================================================================
-    write(*,*)'Making Global Matrix'
+    write(*,*)'Making local Matrix'
    !===================================================================================
-    call mkGSM_1(ND,Number_Element,Number_Node,eid,l_matrix,NODEX,XCOORD,YCOORD,g_matrix)
-   !=================================================================================== 
-    write(*,*)'Set boundary conditions'
-   !===================================================================================
-    call setBC(Number_Element,Number_Node,nd,Number_Node_for_fem,xcoord,ycoord,g_matrix,T_rhs,mnx,mxx,mny,mxy )
-   !===================================================================================
-    j = 1
-    do i = 1, Number_Node
-      if( g_matrix( i,i ) /= 0.0d0 ) then
-         g_matrix2_id(j) = i
-         j=j+1
-      end if
-    end do
-        
-    do j = 1, Number_Node_for_fem
-       do i = 1, Number_Node_for_fem
-          g_matrix2( i,j ) = g_matrix( g_matrix2_id( i ), g_matrix2_id( j ) )
-       end do
-       rhs2( j ) = T_rhs( g_matrix2_id( j ) )
-    end do   
+    call mkLSM_1 (ND,Number_Element,Number_Node,eid,NODEX,XCOORD,YCOORD,l_matrix)
    !===================================================================================
     write(*,*)'Solving Linear Equation' 
    !===================================================================================
-    call dgesv( Number_Node_for_fem,1,g_matrix2,Number_Node_for_fem,ipmkl,rhs2,Number_Node_for_fem,info)
+    call analyze_thermal_distribution(l_matrix, nodex, eid, &
+       1, Number_Node, Number_Element, Width_Matrix_LHS, &
+       xcoord, ycoord, t_boundary_higher_side, t_boundary_lower_side, &
+       mxx,mxy,mnx,mny, &
+       !===========================================================================
+       T_bare)
 
-    T_bare(:)=0.0d0
-
-    do i=1,Number_Node_for_fem
-     T_bare(g_matrix2_id(i))=rhs2(i)
-    end do
    !======================================================== 
     write(*,*)'T-bare calculated'
    !======================================================== 
@@ -264,8 +245,8 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
   !============================================================================================
    !対称化
     do i=1,Number_SElement
-       SElement_coordinate(i,1)=int(xcoord(nodex_s(i,3)))
-       SElement_coordinate(i,2)=int(ycoord(nodex_s(i,3)))
+       SElement_coordinate(i,1)=int(xcoord(nodex_s(3,i)))
+       SElement_coordinate(i,2)=int(ycoord(nodex_s(3,i)))
     end do   
    
     Reverse_SElement_coordinate(:,:)=0
@@ -339,7 +320,6 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
     objective_function_pre=0.0d0
     Best_Objective_function=1.0d0
     lambda_va(:,:)=1.0d0
-    rhs2(:)=0.0d0!clear rhs2
     Number_matrix_design_variable=Number_Design_Variable*Number_Sampling   
 
     allocate(flat_design_variable(Number_matrix_design_variable))
@@ -351,8 +331,7 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
 call MPI_Barrier(MPI_COMM_WORLD,ierr)
 !============================================================================================
 
-!============================================================================================
-  !CMA-ES      
+    !CMA-ES      
 100 if(process_id==0) then
       call cmaes(design_variable,Convergence_Ratio,&
                  'min', Type_CMA,Optimization_Step,Number_Design_Variable, lambda, 0.0d0, 1.0d0, fitness&
@@ -417,39 +396,17 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
      !===================================================================================
      write(*,*)'Making Global Matrix'
      !===================================================================================
-     call mkGSM(ND,Number_Element,Number_Node,lambda,lambda_va,eid,l_matrix,NODEX,XCOORD,YCOORD,g_matrix,sample)
-     !=================================================================================== 
-     write(*,*)'Set boundary conditions'
-     !===================================================================================
-     call setBC(Number_Element,Number_Node,nd,Number_Node_for_fem,xcoord,ycoord,g_matrix,T_rhs,mnx,mxx,mny,mxy )
-     !===================================================================================
-     write(*,*)'change g_matrix for Solving Linear Equation' 
-     !===================================================================================
-     
-     !j = 1
-     !do i = 1, Number_Node
-     !  if( g_matrix( i,i ) /= 0.0d0 ) then
-     !     g_matrix2_id(j) = i
-     !     j=j+1
-     !  end if
-     !end do
- 
-     do j = 1, Number_Node_for_fem
-        do i = 1, Number_Node_for_fem
-           g_matrix2( i,j ) = g_matrix( g_matrix2_id( i ), g_matrix2_id( j ) )
-        end do
-        rhs2( j ) = T_rhs( g_matrix2_id( j ) )
-     end do   
-  
+     call mkLSM (ND,Number_Element,Number_Node,Number_Sampling,lambda_va,eid,NODEX,XCOORD,YCOORD,sample,l_matrix)
      !===================================================================================
      write(*,*)'Solving Linear Equation' 
      !===================================================================================
      !call mkl_set_num_threads(1)
-     call dgesv( Number_Node_for_fem,1,g_matrix2,Number_Node_for_fem,ipmkl,rhs2,Number_Node_for_fem,info)
-      
-      do i=1,Number_Node_for_fem
-       T_rhs(g_matrix2_id(i))=rhs2(i)
-      end do
+     call analyze_thermal_distribution(l_matrix, nodex, eid, &
+       1, Number_Node, Number_Element, Width_Matrix_LHS, &
+       xcoord, ycoord, t_boundary_higher_side, t_boundary_lower_side, &
+       mxx,mxy,mnx,mny, &
+       !===========================================================================
+       T_rhs)
   
     !============================================================================================
      !compute objective function
@@ -493,7 +450,7 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
         do i=1,Number_Element
           if(eid(i)/=2) then
            do j=1,nd
-             write(iw,*) xcoord(nodex(i,j)), ycoord(nodex(i,j)), T_rhs(nodex(i,j))
+             write(iw,*) xcoord(nodex(j,i)), ycoord(nodex(j,i)), T_rhs(nodex(j,i))
            end do
           end if
         end do
@@ -518,8 +475,8 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
       
       do e=1,Number_Element
          do i=1,3
-            position_in_element(e,i,1)=xcoord(nodex(e,i))
-            position_in_element(e,i,2)=ycoord(nodex(e,i))
+            position_in_element(e,i,1)=xcoord(nodex(i,e))
+            position_in_element(e,i,2)=ycoord(nodex(i,e))
         end do
      end do
  
@@ -640,8 +597,6 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
 !===================================================================================
 
  deallocate(SElement_Design_Area,SElement_Design_Area_quarter)
- deallocate(g_matrix2_id)
- deallocate(g_matrix2,rhs2,ipmkl)
  deallocate(Design_Variable)
  deallocate(density_filtered_vec)
  deallocate(fitness)
@@ -658,7 +613,7 @@ end program
   implicit none
   integer nelx,nely,Number_Element,Number_SElement,Number_Node,r_designarea,r_ins
   integer i,j,k,l,m,n,e1,e2
-  integer :: nodex(Number_Element,3),nodex_s(Number_SElement,4),eid(Number_Element)
+  integer :: nodex(3,Number_Element),nodex_s(4,Number_SElement),eid(Number_Element)
   real(8) mnx,mny,mxx,mxy
   real(8) dis
   real(8) :: xcoord(Number_Node),ycoord(Number_Node),nec(Number_Element,2),nesc(Number_SElement,2)
@@ -680,20 +635,20 @@ end program
     do i = 0, nelx - 1
        do j = 1, nely
           m = j + i *nely
-          nodex_s( m,1 ) = j + i*( nely + 1 )
-          nodex_s( m,2 ) = j + i*( nely + 1 ) + ( nely + 1 )
-          nodex_s( m,3 ) = j + i*( nely + 1 ) + ( nely + 2 )
-          nodex_s( m,4 ) = j + i*( nely + 1 ) + 1
+          nodex_s( 1,m ) = j + i*( nely + 1 )
+          nodex_s( 2,m ) = j + i*( nely + 1 ) + ( nely + 1 )
+          nodex_s( 3,m ) = j + i*( nely + 1 ) + ( nely + 2 )
+          nodex_s( 4,m ) = j + i*( nely + 1 ) + 1
        end do
     end do
     
     do i = 1, Number_SElement
-       nodex( i*2,1 ) = nodex_s( i,4 )
-       nodex( i*2,2 ) = nodex_s( i,2 )
-       nodex( i*2,3 ) = nodex_s( i,3 )	
-       nodex( i*2-1,1 ) = nodex_s( i,4 )
-       nodex( i*2-1,2 ) = nodex_s( i,1 )
-       nodex( i*2-1,3 ) = nodex_s( i,2 )
+       nodex( 1,i*2 ) = nodex_s( 4,i )
+       nodex( 2,i*2 ) = nodex_s( 2,i )
+       nodex( 3,i*2 ) = nodex_s( 3,i )	
+       nodex( 1,i*2-1 ) = nodex_s( 4,i )
+       nodex( 2,i*2-1 ) = nodex_s( 1,i )
+       nodex( 3,i*2-1 ) = nodex_s( 2,i )
     end do
     
     do i = 1, nelx 
@@ -736,7 +691,7 @@ end program
     implicit none
     integer i,j,k,l,ie
     integer nd,Number_Node,Number_Element
-    integer :: nodex( Number_Element,nd )
+    integer :: nodex( nd,Number_Element )
     real(8) :: det
     real(8) :: x( nd ), y( nd ), A( nd ), B( nd ), l_matrix( nd,nd )
     real(8) :: xcoord( Number_Node ), ycoord( Number_Node ), g_matrix( Number_Node,Number_Node )
@@ -746,8 +701,8 @@ end program
     do ie = 1, Number_Element
   
         do i = 1, nd
-           x(i)=xcoord(nodex(ie,i))
-           y(i)=ycoord(nodex(ie,i))
+           x(i)=xcoord(nodex(i,ie))
+           y(i)=ycoord(nodex(i,ie))
         end do
           
         B(1) = y(2)-y(3)
@@ -770,197 +725,15 @@ end program
         end do
                    
         do k=1,nd
-           i=nodex(ie,k) 
+           i=nodex(k,ie) 
            do l=1,nd
-              j=nodex(ie,l)  
+              j=nodex(l,ie)  
               g_matrix(i,j)=g_matrix(i,j)+l_matrix(k,l)
            end do
         end do      
      end do      
      return
   end subroutine mkGSM_0
-  
-  SUBROUTINE mkGSM_1 (ND,Number_Element,Number_Node,eid,l_matrix,NODEX,XCOORD,YCOORD,g_matrix)
-    IMPLICIT none
-    integer nd,ne,Number_Node,Number_Element
-    integer :: nodex(Number_Element,nd),eid(Number_Element)
-    real(8) det
-    real(8) :: x(nd),y(nd),a(nd),b(nd),l_matrix(nd,nd),xcoord(Number_Node),ycoord(Number_Node),g_matrix(Number_Node,Number_Node)
-    integer i,j,k,l,ie,n
-
-    g_matrix (:,:) = 0.0D0
-
-    do ie=1,Number_Element
-      if(eid(ie)/=2) then
-        
-        do i=1,nd
-          x(i)=xcoord(nodex(ie,i))
-          y(i)=ycoord(nodex(ie,i))
-        end do
-        
-        B(1)=y(2)-y(3)
-        B(2)=y(3)-y(1)
-        B(3)=y(1)-y(2)
-        A(1)=x(3)-x(2)
-        A(2)=x(1)-x(3)
-        A(3)=x(2)-x(1)
-        det=A(3)*B(2)-B(3)*A(2)
-        
-        DO I = 1 , ND
-          B(I)=B(I)/det
-          A(I)=A(I)/det
-        END DO
-
-        DO I=1,ND
-          DO J=1,ND
-            l_matrix(I,J)=((B(i)*B(j)+A(i)*A(j))*det)/2.0d0
-          END DO
-        END DO
-        
-        DO K=1,ND
-          I=NODEX(IE,K)
-          DO L=1,ND
-            J=NODEX(IE,L)
-            g_matrix(I,J)=g_matrix(I,J)+l_matrix(K,L)
-          END DO
-        END DO
-      end if
-    end do
-    return
-  end SUBROUTINE mkGSM_1
-
-  SUBROUTINE mkGSM (ND,Number_Element,Number_Node,Number_Sampling,lambda_va,eid,l_matrix,NODEX,XCOORD,YCOORD,g_matrix,t)
-     IMPLICIT none
-     integer nd,ne,Number_Node,Number_Element
-     integer t,Number_sampling!t means current stage 
-     integer :: nodex(Number_Element,nd),eid(Number_Element)
-     real(8) det
-     real(8) :: x(nd),y(nd),a(nd),b(nd)
-     real(8) :: l_matrix(nd,nd), xcoord(Number_Node), ycoord(Number_Node), g_matrix(Number_Node,Number_Node)
-     real(8) :: lambda_va(Number_Element,Number_Sampling)
-     integer i,j,k,l,ie,n
-  
-      g_matrix (:,:) = 0.0D0
-     
-     do ie=1,Number_Element
-       n=eid(ie)
-       if(n/=2) then
-         
-         do i=1,nd
-           x(i)=xcoord(nodex(ie,i))
-           y(i)=ycoord(nodex(ie,i))
-         end do
-         
-         B(1)=y(2)-y(3)
-         B(2)=y(3)-y(1)
-         B(3)=y(1)-y(2)
-         A(1)=x(3)-x(2)
-         A(2)=x(1)-x(3)
-         A(3)=x(2)-x(1)
-         det=A(3)*B(2)-B(3)*A(2)
-         
-         DO I = 1 , ND
-           B(I)=B(I)/det
-           A(I)=A(I)/det
-         END DO
-         
-         DO j=1,ND
-           DO i=1,ND
-             l_matrix(I,J)=((B(i)*B(j)+A(i)*A(j))*(lambda_va(ie,t))*det)/2.0d0
-           END DO
-         END DO
-         
-         DO K=1,ND
-           I=NODEX(IE,K)
-           DO L=1,ND
-             J=NODEX(IE,L)
-             g_matrix(I,J)=g_matrix(I,J)+l_matrix(K,L)
-           END DO
-         END DO
-       end if
-     end do
-     return
-   end SUBROUTINE mkGSM
-
-   subroutine setBC(Number_Element,Number_Node,nd,Number_Node_for_fem,xcoord,ycoord,g_matrix,T_rhs,mnx,mxx,mny,mxy)
-      implicit none
-      integer :: i,j
-      integer :: nd, Number_Element, Number_Node, Number_Node_for_fem
-      real(8) :: mnx, mxx, mny, mxy 
-      real(8) :: xcoord( Number_Node ), ycoord( Number_Node ), T_rhs( Number_Node )
-      real(8) :: T_e( Number_Element )
-      real(8) :: g_matrix(Number_Node,Number_Node)
-      real(8) :: rhs2(Number_Node_for_fem)
-      
-      !Reset
-      T_rhs( : ) = 0.0d0
-      !======================================================== 
-      !Set Norman boundary
-      !========================================================
-      do i = 1, Number_Node
-         if( ycoord( i ) == mny .or. ycoord( i ) == mxy ) then
-            T_rhs( i ) = 0.0d0
-         end if
-      end do
-      !========================================================	
-      !Set Dirichlet boundary
-      !========================================================
-      do i = 1, Number_Node
-        if( xcoord( i ) == mnx ) then   
-           do j = 1, Number_Node
-              g_matrix( i,j ) = 0.0d0
-           end do
-              g_matrix( i,i ) = 1.0d0
-              T_rhs( i ) = 0.0d0 
-        else if( xcoord( i ) == mxx ) then        
-           do j = 1, Number_Node
-              g_matrix( i,j ) = 0.0d0
-           end do
-              g_matrix( i,i ) = 1.0d0
-              T_rhs( i ) = 1.0d0
-        end if
-      end do
-      return
-   end subroutine setBC
-     
-   subroutine setBC_0(Number_Element,Number_Node,nd,xcoord,ycoord,g_matrix,T_rhs,mnx,mxx,mny,mxy)
-      implicit none
-      integer :: i,j
-      integer :: nd, Number_Element, Number_Node
-      real(8) :: mnx, mxx, mny, mxy 
-      real(8) :: xcoord( Number_Node ), ycoord( Number_Node ), T_rhs( Number_Node )
-      real(8) :: g_matrix(Number_Node,Number_Node)
-      
-      !Reset
-      T_rhs(:) = 0.0d0
-      !======================================================== 
-      !Set Norman boundary
-      !========================================================
-      do i = 1, Number_Node
-         if( ycoord( i ) == mny .or. ycoord( i ) == mxy ) then
-            T_rhs( i ) = 0.0d0
-         end if
-      end do
-      !========================================================	
-      !Set Dirichlet boundary
-      !========================================================
-      do i = 1, Number_Node
-        if( xcoord( i ) == mnx ) then
-           do j = 1, Number_Node
-              g_matrix( i,j ) = 0.0d0
-           end do
-              g_matrix( i,i ) = 1.0d0
-              T_rhs( i ) = 0.0d0 
-        else if( xcoord( i ) == mxx ) then
-           do j = 1, Number_Node
-              g_matrix( i,j ) = 0.0d0
-           end do
-              g_matrix( i,i ) = 1.0d0
-              T_rhs( i ) = 1.0d0
-        end if
-      end do
-      return
-   end subroutine setBC_0
 
    subroutine mpi_proc_allocate(total_process,Number_tasks,process_id,number_firsttask,tasks_per_process)
       implicit none
@@ -975,6 +748,130 @@ end program
       end if
       return
    end subroutine mpi_proc_allocate
+
+   SUBROUTINE mkLSM (ND,Number_Element,Number_Node,Number_Sampling,lambda_va,eid,NODEX,XCOORD,YCOORD,t,l_matrix)
+   IMPLICIT none
+   integer nd,Number_Node,Number_Element
+   integer t,Number_sampling!t means current stage 
+   integer :: nodex(nd,Number_Element),eid(Number_Element)
+   real(8) det
+   real(8) :: x(nd),y(nd),a(nd),b(nd)
+   real(8) :: l_matrix(nd,nd,Number_Element), xcoord(Number_Node), ycoord(Number_Node)
+   real(8) :: lambda_va(Number_Element,Number_Sampling)
+   integer i,j,ie
+   
+   do ie=1,Number_Element
+     if(eid(ie)/=2) then
+       
+       do i=1,nd
+         x(i)=xcoord(nodex(i,ie))
+         y(i)=ycoord(nodex(i,ie))
+       end do
+       
+       B(1)=y(2)-y(3)
+       B(2)=y(3)-y(1)
+       B(3)=y(1)-y(2)
+       A(1)=x(3)-x(2)
+       A(2)=x(1)-x(3)
+       A(3)=x(2)-x(1)
+       det=A(3)*B(2)-B(3)*A(2)
+       
+       DO I = 1 , ND
+         B(I)=B(I)/det
+         A(I)=A(I)/det
+       END DO
+       
+       DO j=1,ND
+         DO i=1,ND
+           l_matrix(I,J,ie)=((B(i)*B(j)+A(i)*A(j))*(lambda_va(ie,t))*det)/2.0d0
+         END DO
+       END DO
+     end if
+   end do
+   return
+   END SUBROUTINE mkLSM
+
+   SUBROUTINE mkLSM_0 (ND,Number_Element,Number_Node,eid,NODEX,XCOORD,YCOORD,l_matrix)
+   IMPLICIT none
+   integer nd,Number_Node,Number_Element
+   integer :: nodex(nd,Number_Element),eid(Number_Element)
+   real(8) det
+   real(8) :: x(nd),y(nd),a(nd),b(nd)
+   real(8) :: l_matrix(nd,nd,Number_Element), xcoord(Number_Node), ycoord(Number_Node)
+   integer i,j,ie
+
+   l_matrix=0.0d0
+   
+   do ie=1,Number_Element
+       
+       do i=1,nd
+         x(i)=xcoord(nodex(i,ie))
+         y(i)=ycoord(nodex(i,ie))
+       end do
+       
+       B(1)=y(2)-y(3)
+       B(2)=y(3)-y(1)
+       B(3)=y(1)-y(2)
+       A(1)=x(3)-x(2)
+       A(2)=x(1)-x(3)
+       A(3)=x(2)-x(1)
+       det=A(3)*B(2)-B(3)*A(2)
+       
+       DO I = 1 , ND
+         B(I)=B(I)/det
+         A(I)=A(I)/det
+       END DO
+       
+       DO j=1,ND
+         DO i=1,ND
+           l_matrix(I,J,ie)=(B(i)*B(j)+A(i)*A(j)*det)/2.0d0
+         END DO
+       END DO
+   end do
+   return
+   END SUBROUTINE mkLSM_0
+
+   SUBROUTINE mkLSM_1 (ND,Number_Element,Number_Node,eid,NODEX,XCOORD,YCOORD,l_matrix)
+   IMPLICIT none
+   integer nd,Number_Node,Number_Element
+   integer :: nodex(nd,Number_Element),eid(Number_Element)
+   real(8) det
+   real(8) :: x(nd),y(nd),a(nd),b(nd)
+   real(8) :: l_matrix(nd,nd,Number_Element), xcoord(Number_Node), ycoord(Number_Node)
+   integer i,j,ie
+
+   l_matrix=0.0d0
+   
+   do ie=1,Number_Element
+     if(eid(ie)/=2) then
+       
+       do i=1,nd
+         x(i)=xcoord(nodex(i,ie))
+         y(i)=ycoord(nodex(i,ie))
+       end do
+       
+       B(1)=y(2)-y(3)
+       B(2)=y(3)-y(1)
+       B(3)=y(1)-y(2)
+       A(1)=x(3)-x(2)
+       A(2)=x(1)-x(3)
+       A(3)=x(2)-x(1)
+       det=A(3)*B(2)-B(3)*A(2)
+       
+       DO I = 1 , ND
+         B(I)=B(I)/det
+         A(I)=A(I)/det
+       END DO
+       
+       DO j=1,ND
+         DO i=1,ND
+           l_matrix(I,J,ie)=(B(i)*B(j)+A(i)*A(j)*det)/2.0d0
+         END DO
+       END DO
+     end if
+   end do
+   return
+   END SUBROUTINE mkLSM_1
 
    
 
