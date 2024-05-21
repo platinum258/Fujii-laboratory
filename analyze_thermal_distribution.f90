@@ -32,6 +32,7 @@ subroutine analyze_thermal_distribution(LocalMatrix_Triangle, Index_Element_2_No
 
    integer :: i, j, k, e
    integer :: counter
+   character filename*128
 
    integer, allocatable :: Flag_Element_Triangle_Removed(:),Flag_Element_Neumann_BC(:),Flag_Node_Dirichlet_BC(:)
 
@@ -57,6 +58,32 @@ subroutine analyze_thermal_distribution(LocalMatrix_Triangle, Index_Element_2_No
      GlobalMatrix, J_GlobalMatrix, Number_NonZero )
 
    deallocate( Flag_Element_Triangle_Removed ) 
+
+   !check GlobalMatrix
+   open(unit=10, file='G_Matrix_MA57.txt', status='replace')
+   ! Write the array to the file
+   do i = 1, Number_Node
+      write(10, '(F12.5)', advance='no') GlobalMatrix(i, 1)
+      do j = 2, Width_Matrix_LHS
+         write(10, '(F12.5)', advance='no') GlobalMatrix(i, j)
+      end do
+      write(10, *)
+   end do 
+   ! Close the file
+   close(10)
+
+   !check J_GlobalMatrix
+   open(unit=11, file='J_Matrix.txt', status='replace')
+   ! Write the array to the file
+   do i = 1, Number_Node
+      write(11, '(I10)', advance='no') J_GlobalMatrix(i, 1)
+      do j = 2, Width_Matrix_LHS
+       write(11, '(I10)', advance='no') J_GlobalMatrix(i, j)
+      end do
+      write(11, *)
+   end do 
+   ! Close the file
+   close(11)
 
    allocate( Global_Vector_RHS( Number_Node ) )
    Global_Vector_RHS= 0.0d0

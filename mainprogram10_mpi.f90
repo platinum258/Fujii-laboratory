@@ -214,7 +214,7 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
     write(*,*)'Solving Linear Equation' 
    !===================================================================================
     call analyze_thermal_distribution(l_matrix, nodex, eid, &
-           1, Number_Node, Number_Element, Width_Matrix_LHS, &
+           0, Number_Node, Number_Element, Width_Matrix_LHS, &
            xcoord, ycoord, t_boundary_higher_side, t_boundary_lower_side, &
            mxx,mxy,mnx,mny, &
            !===========================================================================
