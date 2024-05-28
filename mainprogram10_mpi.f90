@@ -55,7 +55,7 @@ program thermalcloak
    !その他、プログラム処理用変数
    integer,parameter :: total_process=10!mpi関連
    integer,parameter :: size_flat_nodex=Number_Element*nd!mpi送受信用
-   integer :: process_id, num_procs, namelen, rc, ierr, number_firsttask,tasks_per_process!mpi関連
+   integer :: process_id, num_procs, namelen, rc, ierr, number_firsttask,number_lasttask,tasks_per_process!mpi関連
    integer num_threads!スレッド指定用
    integer info!配列計算用
    integer i,i1,i2,j,k,e,e1,e2,d1,d2,d3,d4,lo,lo1,lo2,lo3,lo4,lo5
@@ -238,6 +238,17 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
        !===========================================================================
        T_bare)
 
+      iw=109
+       open(iw,file='Tbare.txt',status='replace')
+        do i=1,Number_Element
+          if(eid(i)/=2) then
+           do j=1,nd
+             write(iw,*) xcoord(nodex(j,i)), ycoord(nodex(j,i)), T_bare(nodex(j,i))
+           end do
+          end if
+        end do
+       close(iw)  
+
    !======================================================== 
     write(*,*)'T-bare calculated'
    !======================================================== 
@@ -295,7 +306,7 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
 !==========================================================================================
 !broadcast data
  call MPI_BCAST(T_ref,Number_Node,MPI_DOUBLE,0,MPI_COMM_WORLD,ierr) 
- call MPI_BCAST(g_matrix2_id,Number_Node_for_fem,MPI_INT,0,MPI_COMM_WORLD,ierr) 
+ !call MPI_BCAST(g_matrix2_id,Number_Node_for_fem,MPI_INT,0,MPI_COMM_WORLD,ierr) 
  call MPI_BCAST(T_bare,Number_Node,MPI_DOUBLE,0,MPI_COMM_WORLD,ierr)
  call MPI_BCAST(flat_SElement_Design_Area_quarter,Number_SEDesignArea,MPI_INT,0,MPI_COMM_WORLD,ierr)
  call MPI_BCAST(psi_n,1,MPI_DOUBLE,0,MPI_COMM_WORLD,ierr) 
@@ -348,8 +359,12 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
       write(*,*)'convergence error=', Convergence_Ratio_dowhile
 
       flat_design_variable=reshape(design_variable,[Number_matrix_design_variable])
-
     end if
+
+!============================================================================================
+
+!============================================================================================
+call MPI_Barrier(MPI_COMM_WORLD,ierr)
 !============================================================================================
 
 !=====================================================================================================
@@ -365,17 +380,20 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
   end if
 !=============================================================================================
 
-!============================================================================================
-call MPI_Barrier(MPI_COMM_WORLD,ierr)
-!============================================================================================
-
 !=============================================================================================
   !start fem
    !============================================================================================
     call mpi_proc_allocate(total_process,lambda,process_id,number_firsttask,tasks_per_process)
    !============================================================================================
+    
+    number_lasttask= number_firsttask + tasks_per_process-1
 
-    do sample=number_firsttask,number_firsttask+tasks_per_process!while(change>1.0d-2)
+    write(*,*) process_id,'sample=', number_firsttask, '~', number_lasttask
+
+    do sample=number_firsttask,number_lasttask!while(change>1.0d-2)
+    !============================================================================================
+    call MPI_Barrier(MPI_COMM_WORLD,ierr)
+    !============================================================================================
           do i=1,Number_Design_Variable
             density_filtered_vec(i)=design_variable(i,sample)
           end do
@@ -392,7 +410,7 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
           lambda_va(lo5*2-1,sample)=1.0d0+(density_filtered_vec(i))
          end do 
        end do
-         
+          
      !===================================================================================
      write(*,*)'Making Global Matrix'
      !===================================================================================
@@ -407,6 +425,8 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
        mxx,mxy,mnx,mny, &
        !===========================================================================
        T_rhs)
+
+       write(*,*) 'process=', process_id,'Sample=',sample, 'complete'
   
     !============================================================================================
      !compute objective function
@@ -419,29 +439,37 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
       end do
   
       psi=sum(npsi)/psi_n
-
-      if(process_id/=0) then
-         call MPI_Send(psi,1,MPI_INTEGER,0,0,MPI_COMM_WORLD,ierr)
-         call MPI_Send(sample,1,MPI_INTEGER,0,0,MPI_COMM_WORLD,ierr)      
+         
+      if(process_id==0) then
+        write(*,*) 'Sample=',sample  
       end if
 
-      if(process_id==0) then
-         Objective_function(sample)=psi
-         fitness(sample)=Objective_function(sample)
-         do i=1,total_process-1
+      !============================================================================================
+      call MPI_Barrier(MPI_COMM_WORLD,ierr)
+      !============================================================================================      
+      do i=1,total_process-1
+
+        if(process_id==i) then
+           call MPI_Send(psi,1,MPI_DOUBLE,0,0,MPI_COMM_WORLD,ierr)
+           call MPI_Send(sample,1,MPI_INTEGER,0,0,MPI_COMM_WORLD,ierr)
+        end if
+
+        if(process_id==0) then
+           Objective_function(sample)=psi
+           fitness(sample)=Objective_function(sample) 
            call MPI_Recv(psi,1,MPI_DOUBLE,i,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE,ierr)
            call MPI_Recv(sample,1,MPI_INTEGER,i,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE,ierr)
            Objective_function(sample)=psi
            fitness(sample)=Objective_function(sample)
            write(*,*) 'Sample=',sample  
-         end do
-      end if
-  
-      !============================================================================================
-      call MPI_Barrier(MPI_COMM_WORLD,ierr)
-      !============================================================================================
+        end if    
+      end do
     end do
  
+!============================================================================================
+call MPI_Barrier(MPI_COMM_WORLD,ierr)
+!============================================================================================
+
 !============================================================================================
     !find best result&output
     if(process_id==0) then 
@@ -589,12 +617,12 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
    if(process_id==0) then
       if(Convergence_Ratio_dowhile>=Convergence_Error)then
          goto 100
+      else
+        !===================================================================================
+         write(*,*)'Optimization Complete'
+        !===================================================================================
       end if     
    end if
-
-!===================================================================================
- write(*,*)'Optimization Complete'
-!===================================================================================
 
  deallocate(SElement_Design_Area,SElement_Design_Area_quarter)
  deallocate(Design_Variable)
