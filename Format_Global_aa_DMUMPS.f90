@@ -75,6 +75,7 @@ subroutine Format_Global_aa_DMUMPS &
       end do
      
       if( Counter_NonZero /= Number_NonZero)then
+         write(*,*)'Counter_NonZero=', Counter_NonZero      
          write(*,*)'Counter_NonZero /= Number_NonZero'
          write(*,*)'Format_Global_aa_DMUMPS.f90 59 '
          stop
@@ -113,12 +114,12 @@ subroutine Format_Global_aa_DMUMPS &
             if( 0 < J_GlobalMatrix( i, j ) .and. J_GlobalMatrix( i, j ) <= Number_Node )then
                if( i <= J_GlobalMatrix( i, j ) )then ! Symmetric
                   Counter_NonZero= Counter_NonZero +1
-                  if( Counter_NonZero > Number_NonZero )then
-                     write(*,*)'ERROR :Counter_NonZero=' ,Counter_NonZero, '>', & 
-                           'Number_NonZero', Number_NonZero
-                     write(*,*)'Format_Global_aa_DMUMPS.f90 65'
-                     stop
-                  end if
+                 if( Counter_NonZero > Number_NonZero )then
+                    write(*,*)'ERROR :Counter_NonZero=' ,Counter_NonZero, '>', & 
+                          'Number_NonZero', Number_NonZero
+                    write(*,*)'Format_Global_aa_DMUMPS.f90 65'
+                    stop
+                 end if
                
                   aa_zmumps( Counter_NonZero )= GlobalMatrix( i, j )
                   ia_zmumps( Counter_NonZero )= i

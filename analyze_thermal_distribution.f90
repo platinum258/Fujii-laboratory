@@ -24,7 +24,7 @@ subroutine analyze_thermal_distribution(LocalMatrix_Triangle, Index_Element_2_No
    integer, parameter :: Flag_Off= 0
    
    integer, parameter :: Flag_Symmetric= Flag_On
-   integer, parameter :: Flag_Matrix_Upper= Flag_On
+   integer, parameter :: Flag_Matrix_Upper= Flag_Off
    integer, parameter :: ID_Element_Thermal_Insulator= 2
 
    integer :: Flag_Remove_Element
@@ -35,8 +35,9 @@ subroutine analyze_thermal_distribution(LocalMatrix_Triangle, Index_Element_2_No
    character filename*128
 
    integer, allocatable :: Flag_Element_Triangle_Removed(:),Flag_Element_Neumann_BC(:),Flag_Node_Dirichlet_BC(:)
+   integer, allocatable :: J_GlobalMatrix(:,:)
 
-   real(8), allocatable :: GlobalMatrix(:,:), J_GlobalMatrix(:,:)
+   real(8), allocatable :: GlobalMatrix(:,:)
    real(8), allocatable :: Global_Vector_RHS(:),Nodal_Value_on_Dirichlet_BC(:),Nodal_Value_Fixed_in_PEC(:)
    real(8), allocatable :: aa_zmumps(:), ia_zmumps(:), ja_zmumps(:)
 
@@ -188,25 +189,41 @@ subroutine analyze_thermal_distribution(LocalMatrix_Triangle, Index_Element_2_No
 
    end if   
 
-   !count Numbver_nonzero
+   !count Number_nonzero
    Number_NonZero= 0
 
-   do j= 1, Width_Matrix_LHS
-      do i= 1, Number_Node
-         if( Flag_Symmetric==Flag_On )then
-            if( i >= J_GlobalMatrix( i, j ) .and. J_GlobalMatrix( i, j ) > 0 )then
-               Number_NonZero= Number_NonZero +1
-            end if
+         if( Flag_Symmetric==Flag_On .and. Flag_Matrix_Upper==Flag_Off )then
+           do i= 1, Number_Node 
+             do j= 1, Width_Matrix_LHS
+               if( 0 < J_GlobalMatrix( i, j ) .and. J_GlobalMatrix( i, j ) <= Number_Node )then
+                  if( i >= J_GlobalMatrix( i, j ) )then ! Symmetric
+                     Number_NonZero= Number_NonZero +1
+                  end if
+               end if   
+             end do
+           end do
+         else if( Flag_Symmetric==Flag_On .and. Flag_Matrix_Upper==Flag_On )then
+           do i= 1, Number_Node 
+             do j= 1, Width_Matrix_LHS 
+               if( 0 < J_GlobalMatrix( i, j ) .and. J_GlobalMatrix( i, j ) <= Number_Node )then
+                  if( i <= J_GlobalMatrix( i, j ) )then ! Symmetric
+                     Number_NonZero= Number_NonZero +1
+                  end if
+               end if
+           end do
+             end do
          else if( Flag_Symmetric==Flag_Off )then
-            if( 0 < J_GlobalMatrix( i, j ) .and. J_GlobalMatrix( i, j ) <= Number_Node  )then
-               Number_NonZero= Number_NonZero +1
-            end if
+           do i= 1, Number_Node 
+             do j= 1, Width_Matrix_LHS
+               if( 0 < J_GlobalMatrix( i, j ) .and. J_GlobalMatrix( i, j ) <= Number_Node  )then
+                  Number_NonZero= Number_NonZero +1
+               end if
+           end do
+             end do
          else
             write(*,*)'Flag_Symmetric=', Flag_Symmetric
             call Output_Error( 'Analyze_Steady_State_Heat_Conduction', 1118 )
          end if
-      end do
-   end do
 
    write(*,*)'         Number_NonZero=', Number_NonZero
    write(*,*)'         Number_Node=',  Number_Node 
