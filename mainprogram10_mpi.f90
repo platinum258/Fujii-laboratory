@@ -10,7 +10,7 @@ program thermalcloak
    integer,parameter :: nelx=200
    integer,parameter :: nely=150
    integer,parameter :: r_designarea=50
-   integer,parameter :: r_ins=15
+   integer,parameter :: r_ins=30
    real(8),parameter :: mnx=-(dble(nelx/2))
    real(8),parameter :: mxx=-mnx
    real(8),parameter :: mny=-(dble(nely/2))
@@ -589,11 +589,11 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
            do e=1,Number_Element
              if(eid(e)==4) then
                write(iw,*) (600.0d0/dble(nelx))*position_in_element(e,1,1)+300.0d0,&
-               (600.0d0/dble(nely))*position_in_element(e,1,2)+225.0d0, 'moveto'
+               (450.0d0/dble(nely))*position_in_element(e,1,2)+225.0d0, 'moveto'
                write(iw,*) (600.0d0/dble(nelx))*position_in_element(e,2,1)+300.0d0,&
-               (600.0d0/dble(nely))*position_in_element(e,2,2)+225.0d0, 'lineto'
+               (450.0d0/dble(nely))*position_in_element(e,2,2)+225.0d0, 'lineto'
                write(iw,*) (600.0d0/dble(nelx))*position_in_element(e,3,1)+300.0d0,&
-               (600.0d0/dble(nely))*position_in_element(e,3,2)+225.0d0, 'lineto'
+               (450.0d0/dble(nely))*position_in_element(e,3,2)+225.0d0, 'lineto'
                write(iw,*) 'closepath'
                write(iw,*) 1.0d0-(Best_sample_lambda_va(e)-1.0d0),'setgray'
                write(iw,*) 'fill'
@@ -630,11 +630,11 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
          do e=1,Number_Element
            if(eid(e)==4) then
              write(iw,*) (600.0d0/dble(nelx))*position_in_element(e,1,1)+300.0d0,&
-             (600.0d0/dble(nely))*position_in_element(e,1,2)+225.0d0, 'moveto'
+             (450.0d0/dble(nely))*position_in_element(e,1,2)+225.0d0, 'moveto'
              write(iw,*) (600.0d0/dble(nelx))*position_in_element(e,2,1)+300.0d0,&
-             (600.0d0/dble(nely))*position_in_element(e,2,2)+225.0d0, 'lineto'
+             (450.0d0/dble(nely))*position_in_element(e,2,2)+225.0d0, 'lineto'
              write(iw,*) (600.0d0/dble(nelx))*position_in_element(e,3,1)+300.0d0,&
-             (600.0d0/dble(nely))*position_in_element(e,3,2)+225.0d0, 'lineto'
+             (450.0d0/dble(nely))*position_in_element(e,3,2)+225.0d0, 'lineto'
              write(iw,*) 'closepath'
              write(iw,*) 1.0d0-Density_plot(e),'setgray'
              write(iw,*) 'fill'
