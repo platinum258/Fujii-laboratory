@@ -1,3 +1,9 @@
+ parameter:
+size=200x150
+design_area=r50
+ins=r15
+sampling=100 
+ 
  best result is in generation         445 sampling=          10
  best value of Objective function is  3.709796289533537E-002
  best design variables
