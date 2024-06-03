@@ -10,7 +10,7 @@ program thermalcloak
    integer,parameter :: nelx=200
    integer,parameter :: nely=150
    integer,parameter :: r_designarea=50
-   integer,parameter :: r_ins=10
+   integer,parameter :: r_ins=15
    real(8),parameter :: mnx=-(dble(nelx/2))
    real(8),parameter :: mxx=-mnx
    real(8),parameter :: mny=-(dble(nely/2))
@@ -56,11 +56,13 @@ program thermalcloak
    integer,parameter :: total_process=10!mpi関連
    integer,parameter :: size_flat_nodex=Number_Element*nd!mpi送受信用
    integer :: process_id, num_procs, namelen, rc, ierr, number_firsttask,number_lasttask,tasks_per_process!mpi関連
+   integer :: process_current_sample
    integer num_threads!スレッド指定用
    integer info!配列計算用
    integer i,i1,i2,j,k,e,e1,e2,d1,d2,d3,d4,lo,lo1,lo2,lo3,lo4,lo5
    integer sample
    integer ir,iw!入出力関連
+   integer convergence_flag ! 1 or 0 収束判定結果を示す
    character filename*128
 !============================================================================================
 
@@ -78,7 +80,8 @@ program thermalcloak
 
 !============================================================================================
    !最適化関連配列
-   real(8) :: lambda_va(Number_Element,Number_Sampling),Best_lambda_va(Number_Element)!設計変数から等価変換した熱伝導率
+   real(8) :: lambda_va(Number_Element,Number_Sampling),sample_lambda_va(Number_Element)
+   real(8) :: Best_sample_lambda_va(Number_Element)!設計変数から等価変換した熱伝導率
    real(8) :: Objective_function(Number_Sampling)
    real(8) :: T_ref(Number_Node),T_bare(Number_Node)
    real(8) :: npsi_n(Number_Node),npsi(Number_Node)
@@ -90,8 +93,10 @@ program thermalcloak
 !============================================================================================
    !mpi送受信用配列
    integer :: flat_nodex(size_flat_nodex)
+   !integer :: current_sample(total_process-1)
    integer,allocatable :: flat_SElement_Design_Area_quarter(:)
-   real(8),allocatable :: flat_design_variable(:)
+   !real(8) :: current_psi(total_process-1)
+   real(8),allocatable :: flat_design_variable(:)  
 !============================================================================================
 
 !============================================================================================
@@ -293,9 +298,14 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
        npsi_n(i)=0.0d0
     end do
 
-    do i=1,Number_Node
-       npsi_n(i)=(abs(T_bare(i)-T_ref(i)))**2.0d0
-    end do   
+    do j=1,nd
+       do i=1,Number_Element
+          if(eid(i)/=2)then
+             npsi_n(nodex(j,i))=(abs(T_bare(nodex(j,i))-T_ref(nodex(j,i))))**2.0d0
+          end if
+       end do
+    end do
+ 
 
     psi_n=sum(npsi_n)
 
@@ -330,7 +340,10 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
     objective_function_average=0.0d0
     objective_function_pre=0.0d0
     Best_Objective_function=1.0d0
+    objective_function(:)=1.0d0
     lambda_va(:,:)=1.0d0
+    sample_lambda_va(:)=1.0d0
+    convergence_flag=0
     Number_matrix_design_variable=Number_Design_Variable*Number_Sampling   
 
     allocate(flat_design_variable(Number_matrix_design_variable))
@@ -339,11 +352,11 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
     !call mkl_set_num_threads(1)
 
 !============================================================================================
-call MPI_Barrier(MPI_COMM_WORLD,ierr)
+100 call MPI_Barrier(MPI_COMM_WORLD,ierr)
 !============================================================================================
 
     !CMA-ES      
-100 if(process_id==0) then
+ if(process_id==0) then
       call cmaes(design_variable,Convergence_Ratio,&
                  'min', Type_CMA,Optimization_Step,Number_Design_Variable, lambda, 0.0d0, 1.0d0, fitness&
                 ,average,Vec_D,mat_B,sigma)!, flg_min, type_cma) 
@@ -391,30 +404,27 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
     write(*,*) process_id,'sample=', number_firsttask, '~', number_lasttask
 
     do sample=number_firsttask,number_lasttask!while(change>1.0d-2)
-    !============================================================================================
-    call MPI_Barrier(MPI_COMM_WORLD,ierr)
-    !============================================================================================
           do i=1,Number_Design_Variable
             density_filtered_vec(i)=design_variable(i,sample)
           end do
   
-       !set lambda_va
+       !set sample_lambda_va
        !do i=1,Number_Element
-       !   lambda_va(i,sample)=1.0d0
+       !   sample_lambda_va(i,sample)=1.0d0
        !end do
   
        do i=1,Number_Design_Variable
          do j=1,4
           lo5=SElement_Design_Area_quarter(i,j)
-          lambda_va(lo5*2,sample)=1.0d0+(density_filtered_vec(i))
-          lambda_va(lo5*2-1,sample)=1.0d0+(density_filtered_vec(i))
+          sample_lambda_va(lo5*2)=1.0d0+(density_filtered_vec(i))
+          sample_lambda_va(lo5*2-1)=1.0d0+(density_filtered_vec(i))
          end do 
        end do
           
      !===================================================================================
-     write(*,*)'Making Global Matrix'
+     write(*,*)'Making Local Matrix'
      !===================================================================================
-     call mkLSM (ND,Number_Element,Number_Node,Number_Sampling,lambda_va,eid,NODEX,XCOORD,YCOORD,sample,l_matrix)
+     call mkLSM (ND,Number_Element,Number_Node,Number_Sampling,sample_lambda_va,eid,NODEX,XCOORD,YCOORD,sample,l_matrix)
      !===================================================================================
      write(*,*)'Solving Linear Equation' 
      !===================================================================================
@@ -430,40 +440,69 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
   
     !============================================================================================
      !compute objective function
-      do j=1,Number_Element
-         npsi(j)=0.0d0
-      end do
+      npsi(:)=0.0d0
       
-      do i=1,Number_Node
-         npsi(i)=(abs(T_rhs(i)-T_ref(i)))**2.0d0
-      end do
-  
+      do j=1,nd
+        do i=1,Number_Element
+           if(eid(i)/=2)then
+              npsi(nodex(j,i))=(abs(T_rhs(nodex(j,i))-T_ref(nodex(j,i))))**2.0d0
+           end if
+        end do
+      end do    
+             
       psi=sum(npsi)/psi_n
          
-      if(process_id==0) then
-        write(*,*) 'Sample=',sample  
+!      if(process_id==0) then
+!        write(*,*) 'Sample=',sample  
+!      end if
+      process_current_sample=sample
+
+      if(process_id==0)then
+        Objective_function(process_current_sample)=psi
+        fitness(process_current_sample)=Objective_function(process_current_sample)
+        do i=1,Number_Element
+           lambda_va(i,process_current_sample)=sample_lambda_va(i)
+        end do
       end if
 
       !============================================================================================
       call MPI_Barrier(MPI_COMM_WORLD,ierr)
-      !============================================================================================      
-      do i=1,total_process-1
+      !============================================================================================ 
 
-        if(process_id==i) then
+      !call MPI_Gather(psi,1,MPI_double,current_psi,1,MPI_double,0,MPI_COMM_WORLD,ierr)
+      !call MPI_Gather(sample,1,MPI_INTEGER,current_sample,1,MPI_double,0,MPI_COMM_WORLD,ierr)
+!
+      !if(process_id==0)then
+      !  sample=0
+      !  do i=1,total_process-1
+      !     sample=current_sample(i)
+      !     Objective_Function(sample)
+      !  end do
+
+        if(process_id/=0) then
            call MPI_Send(psi,1,MPI_DOUBLE,0,0,MPI_COMM_WORLD,ierr)
-           call MPI_Send(sample,1,MPI_INTEGER,0,0,MPI_COMM_WORLD,ierr)
+           call MPI_Send(process_current_sample,1,MPI_INTEGER,0,0,MPI_COMM_WORLD,ierr)
+           call MPI_Send(sample_lambda_va,Number_Element,MPI_DOUBLE,0,0,MPI_COMM_WORLD,ierr)
+           write(*,*) 'Sample=',sample, 'status=data sent'
         end if
 
         if(process_id==0) then
-           Objective_function(sample)=psi
-           fitness(sample)=Objective_function(sample) 
+          do i=1,total_process-1
            call MPI_Recv(psi,1,MPI_DOUBLE,i,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE,ierr)
-           call MPI_Recv(sample,1,MPI_INTEGER,i,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE,ierr)
-           Objective_function(sample)=psi
-           fitness(sample)=Objective_function(sample)
-           write(*,*) 'Sample=',sample  
+           call MPI_Recv(process_current_sample,1,MPI_INTEGER,i,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE,ierr)
+           call MPI_Recv(sample_lambda_va,Number_Element,MPI_DOUBLE,i,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE,ierr)
+           Objective_function(process_current_sample)=psi
+           fitness(process_current_sample)=Objective_function(process_current_sample)
+           do j=1,Number_Element
+              lambda_va(j,process_current_sample)=sample_lambda_va(j)
+           end do
+           write(*,*) 'Sample=',process_current_sample, 'status=data received'
+          end do
         end if    
-      end do
+
+      !============================================================================================
+      call MPI_Barrier(MPI_COMM_WORLD,ierr)
+      !============================================================================================
     end do
  
 !============================================================================================
@@ -492,7 +531,7 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
       objective_function_average=0.0d0
  
       do i=1,Number_Sampling
-         objective_function_average=objective_function_average+objective_function(i)/100.0d0
+         objective_function_average=objective_function_average+objective_function(i)/dble(Number_Sampling)
       end do
  
       Best_Objective_function_Loc_Temp=minloc(objective_function,1)
@@ -518,7 +557,7 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
        open( iw,file='Best_Value.txt',status='replace' )
  
           write(iw,*) 'best result is in generation',Optimization_step,'sampling=',Best_Objective_function_Loc
-          write(iw,*) 'best vale of Objective function is',Best_Objective_function
+          write(iw,*) 'best value of Objective function is',Best_Objective_function
           write(iw,*) 'best design variables'
   
           do i=1,Number_Design_Variable
@@ -527,7 +566,7 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
        close(iw)  
  
        do i=1,Number_Element
-          Best_lambda_va(i)=lambda_va(i,Best_Objective_function_Loc)    
+          Best_sample_lambda_va(i)=lambda_va(i,Best_Objective_function_Loc)    
        end do
        
        iw=108
@@ -556,7 +595,7 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
                write(iw,*) (600.0d0/dble(nelx))*position_in_element(e,3,1)+300.0d0,&
                (600.0d0/dble(nely))*position_in_element(e,3,2)+225.0d0, 'lineto'
                write(iw,*) 'closepath'
-               write(iw,*) 1.0d0-Best_lambda_va(e),'setgray'
+               write(iw,*) 1.0d0-(Best_sample_lambda_va(e)-1.0d0),'setgray'
                write(iw,*) 'fill'
                write(iw,*) ''
              end if
@@ -597,7 +636,7 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
              write(iw,*) (600.0d0/dble(nelx))*position_in_element(e,3,1)+300.0d0,&
              (600.0d0/dble(nely))*position_in_element(e,3,2)+225.0d0, 'lineto'
              write(iw,*) 'closepath'
-             write(iw,*) 1.0d0-(e),'setgray'
+             write(iw,*) 1.0d0-Density_plot(e),'setgray'
              write(iw,*) 'fill'
              write(iw,*) ''
            end if
@@ -608,21 +647,33 @@ call MPI_Barrier(MPI_COMM_WORLD,ierr)
  
      write(*,*)'step',Optimization_step
     end if
-!============================================================================================
-call MPI_Barrier(MPI_COMM_WORLD,ierr)
-!============================================================================================ 
 
 !===================================================================================
    !収束判定
    if(process_id==0) then
-      if(Convergence_Ratio_dowhile>=Convergence_Error)then
-         goto 100
-      else
-        !===================================================================================
-         write(*,*)'Optimization Complete'
-        !===================================================================================
+      if(Convergence_Ratio_dowhile<Convergence_Error)then
+         !===================================================================================
+          write(*,*)'Optimization Complete'
+         !===================================================================================      
+         convergence_flag=1
       end if     
    end if
+
+   call MPI_BCAST(convergence_flag,1,MPI_INTEGER,0,MPI_COMM_WORLD,ierr) 
+
+!============================================================================================
+call MPI_Barrier(MPI_COMM_WORLD,ierr)
+!============================================================================================
+
+   if(convergence_flag==1)then 
+      goto 101
+   end if
+
+   goto 100 
+
+!============================================================================================
+101 call MPI_Finalize(ierr)
+!============================================================================================ 
 
  deallocate(SElement_Design_Area,SElement_Design_Area_quarter)
  deallocate(Design_Variable)
@@ -777,7 +828,7 @@ end program
       return
    end subroutine mpi_proc_allocate
 
-   SUBROUTINE mkLSM (ND,Number_Element,Number_Node,Number_Sampling,lambda_va,eid,NODEX,XCOORD,YCOORD,t,l_matrix)
+   SUBROUTINE mkLSM (ND,Number_Element,Number_Node,Number_Sampling,sample_lambda_va,eid,NODEX,XCOORD,YCOORD,t,l_matrix)
    IMPLICIT none
    integer nd,Number_Node,Number_Element
    integer t,Number_sampling!t means current stage 
@@ -785,7 +836,7 @@ end program
    real(8) det
    real(8) :: x(nd),y(nd),a(nd),b(nd)
    real(8) :: l_matrix(nd,nd,Number_Element), xcoord(Number_Node), ycoord(Number_Node)
-   real(8) :: lambda_va(Number_Element,Number_Sampling)
+   real(8) :: sample_lambda_va(Number_Element)
    integer i,j,ie
    
    do ie=1,Number_Element
@@ -811,7 +862,7 @@ end program
        
        DO j=1,ND
          DO i=1,ND
-           l_matrix(I,J,ie)=((B(i)*B(j)+A(i)*A(j))*(lambda_va(ie,t))*det)/2.0d0
+           l_matrix(I,J,ie)=((B(i)*B(j)+A(i)*A(j))*(sample_lambda_va(ie))*det)/2.0d0
          END DO
        END DO
      end if
