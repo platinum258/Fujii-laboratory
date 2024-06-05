@@ -1,0 +1,53 @@
+SUBROUTINE mkGSM (ND,Number_Element,Number_Node,lambda_va,eid,x,y,A,B,SK,NODEX,XCOORD,YCOORD,RK)
+  IMPLICIT none
+  integer nd,ne,Number_Node,Number_Element
+  integer :: nodex(Number_Element,nd),eid(Number_Element)
+  real(8) det
+  real(8) :: x(nd),y(nd),a(8), b(3), sk(nd,nd), xcoord(Number_Node), ycoord(Number_Node), rk(Number_Node,Number_Node)
+  real(8) :: lambda_va(Number_Element)
+  integer i,j,k,l,ie,n
+
+  DO I = 1 , Number_Node
+  DO J = 1 , Number_Node
+  RK ( I , J ) = 0.D0
+  END DO
+  END DO
+  do ie=1,Number_Element
+  n=eid(ie)
+  if(n/=2) then
+  do i=1,nd
+  x(i)=xcoord(nodex(ie,i))
+  y(i)=ycoord(nodex(ie,i))
+  end do
+  A(1)=(-x(1)+x(2)+x(3)-x(4))/0.25d0
+  A(2)=(-x(1)+x(2)+x(3)-x(4))/0.25d0
+  A(3)=(-y(1)+y(2)+y(3)-y(4))/0.25d0
+  A(4)=(-y(1)+y(2)+y(3)-y(4))/0.25d0
+  A(5)=(-x(1)+x(2)+x(3)-x(4))/0.25d0
+  A(6)=(-x(1)+x(2)+x(3)-x(4))/0.25d0
+  A(7)=(-y(1)+y(2)+y(3)-y(4))/0.25d0
+  A(8)=(-y(1)+y(2)+y(3)-y(4))/0.25d0
+  B(1)=(A(1)*A(7))-(A(3)*A(5))
+  B(2)=(A(1)*A(4))-(A(3)*A(2))
+  B(3)=(A(2)*A(7))-(A(4)*A(5))
+  det=A(3)*B(2)-B(3)*A(2)
+  DO I = 1 , ND
+  B(I)=B(I)/det
+  A(I)=A(I)/det
+  END DO
+  DO I=1,ND
+  DO J=1,ND
+  SK(I,J)=((B(i)*B(j)+A(i)*A(j))*(lambda_va(ie))*det)/2.0d0
+  END DO
+  END DO
+  DO K=1,ND
+  I=NODEX(IE,K)
+  DO L=1,ND
+  J=NODEX(IE,L)
+  RK(I,J)=RK(I,J)+SK(K,L)
+  END DO
+  END DO
+  end if
+  end do
+  return
+  end
