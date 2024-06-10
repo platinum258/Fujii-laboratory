@@ -90,15 +90,17 @@ subroutine analyze_thermal_distribution(LocalMatrix_Triangle, Index_Element_2_No
    Global_Vector_RHS= 0.0d0
 
    !set Neumann BC
-   allocate(Flag_Element_Neumann_BC( number_node ))
+   allocate(Flag_Element_Neumann_BC( Number_Element_Triangle ))
    Flag_Element_Neumann_BC=Flag_Off
 
-   do i= 1, number_node
-      if( Position_Node_Y( i ) == min_node_position_y )then
-         Flag_Element_Neumann_BC(i)= Flag_On
-      else if( Position_Node_Y( i ) == max_node_position_y )then 
-         Flag_Element_Neumann_BC(i)= Flag_On 
-      end if     
+   do i= 1, Number_Element_Triangle
+      do j=1,3
+         if( Position_Node_Y( Index_Element_2_Node_Triangle(j,i) ) == min_node_position_y )then
+            Flag_Element_Neumann_BC(i)= Flag_On
+         else if( Position_Node_Y( Index_Element_2_Node_Triangle(j,i) ) == max_node_position_y )then 
+            Flag_Element_Neumann_BC(i)= Flag_On 
+         end if     
+      end do
    end do
 
    call Implement_Neumann_BC_complex_CSRF &

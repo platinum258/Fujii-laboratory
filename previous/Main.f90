@@ -18,8 +18,8 @@ program thermalcloak_ITRfree
 !============================================================================================   
    
    character filename*128
-   integer,parameter :: nelx = 150   !全体領域のx方向の分割数
-   integer,parameter :: nely = 100   !全体領域のy方向の分割数
+   integer,parameter :: nelx = 300   !全体領域のx方向の分割数
+   integer,parameter :: nely = 200   !全体領域のy方向の分割数
    
    integer,parameter :: nd = 3
    double precision, parameter :: vol_constraint = 0.4d0 !初期値
@@ -109,7 +109,7 @@ program thermalcloak_ITRfree
    !Set number threads  
    !===========================================================================================         
    !$call omp_set_num_threads(28)
-   call mkl_set_num_threads(2)
+   !call mkl_set_num_threads(2)
       
    !=====================================================
    write(*,*)'**Create Finite Element Data**'
