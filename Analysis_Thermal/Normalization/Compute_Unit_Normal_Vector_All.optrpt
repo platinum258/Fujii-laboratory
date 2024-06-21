@@ -1,0 +1,21 @@
+
+Begin optimization report for: COMPUTE_UNIT_NORMAL_VECTOR_ALL
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at Compute_Unit_Normal_Vector_All.f90(20,6)
+   remark #25460: No loop optimizations reported
+
+   LOOP BEGIN at Compute_Unit_Normal_Vector_All.f90(23,11)
+      remark #25460: No loop optimizations reported
+
+      LOOP BEGIN at Compute_Unit_Normal_Vector_All.f90(24,16)
+         remark #25460: No loop optimizations reported
+      LOOP END
+   LOOP END
+
+   LOOP BEGIN at Compute_Unit_Normal_Vector_All.f90(35,44)
+   LOOP END
+LOOP END
+===========================================================================

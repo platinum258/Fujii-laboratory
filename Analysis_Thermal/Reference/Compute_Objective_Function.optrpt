@@ -1,0 +1,63 @@
+
+Begin optimization report for: COMPUTE_OBJECTIVE_FUNCTION
+
+    Report from: OpenMP optimizations [openmp]
+
+OpenMP Construct at Compute_Objective_Function.f90(74,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Compute_Objective_Function.f90(90,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Compute_Objective_Function.f90(116,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Compute_Objective_Function.f90(127,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Compute_Objective_Function.f90(142,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Compute_Objective_Function.f90(165,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Compute_Objective_Function.f90(182,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Compute_Objective_Function.f90(201,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Compute_Objective_Function.f90(216,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Compute_Objective_Function.f90(245,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Compute_Objective_Function.f90(258,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Compute_Objective_Function.f90(275,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Compute_Objective_Function.f90(294,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Compute_Objective_Function.f90(310,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Compute_Objective_Function.f90(324,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Compute_Objective_Function.f90(351,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Compute_Objective_Function.f90(375,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Compute_Objective_Function.f90(393,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Compute_Objective_Function.f90(412,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at Compute_Objective_Function.f90(423,6)
+   remark #25460: No loop optimizations reported
+LOOP END
+
+LOOP BEGIN at Compute_Objective_Function.f90(423,6)
+<Remainder>
+LOOP END
+
+LOOP BEGIN at Compute_Objective_Function.f90(415,6)
+   remark #25460: No loop optimizations reported
+LOOP END
+
+LOOP BEGIN at Compute_Objective_Function.f90(415,6)
+<Remainder>
+LOOP END
+===========================================================================

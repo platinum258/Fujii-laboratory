@@ -1,0 +1,14 @@
+
+Begin optimization report for: FORMAT_GLOBAL_AA_ZMUMPS
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at Format_Global_aa_ZMUMPS.f90(25,6)
+   remark #25460: No loop optimizations reported
+LOOP END
+
+LOOP BEGIN at Format_Global_aa_ZMUMPS.f90(25,6)
+<Remainder>
+LOOP END
+===========================================================================

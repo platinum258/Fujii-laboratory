@@ -1,0 +1,22 @@
+
+Begin optimization report for: COMPUTE_INCIDENT_WAVE
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at Compute_Incident_Wave.f90(131,11)
+   remark #25460: No loop optimizations reported
+LOOP END
+
+LOOP BEGIN at Compute_Incident_Wave.f90(141,11)
+   remark #25460: No loop optimizations reported
+LOOP END
+
+LOOP BEGIN at Compute_Incident_Wave.f90(172,11)
+   remark #25460: No loop optimizations reported
+LOOP END
+
+LOOP BEGIN at Compute_Incident_Wave.f90(172,11)
+<Remainder>
+LOOP END
+===========================================================================

@@ -1,0 +1,22 @@
+
+Begin optimization report for: COMPUTE_Q_FACTOR
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at Compute_Q_Factor.f90(127,6)
+   remark #25460: No loop optimizations reported
+LOOP END
+
+LOOP BEGIN at Compute_Q_Factor.f90(127,6)
+<Remainder>
+LOOP END
+
+LOOP BEGIN at Compute_Q_Factor.f90(144,6)
+   remark #25460: No loop optimizations reported
+LOOP END
+
+LOOP BEGIN at Compute_Q_Factor.f90(144,6)
+<Remainder>
+LOOP END
+===========================================================================

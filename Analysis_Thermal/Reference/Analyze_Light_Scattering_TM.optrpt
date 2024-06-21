@@ -1,0 +1,156 @@
+
+Begin optimization report for: ANALYZE_LIGHT_SCATTERING_TM
+
+    Report from: OpenMP optimizations [openmp]
+
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(173,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(198,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(209,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(224,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(247,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(264,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(283,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(298,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(321,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(334,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(351,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(370,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(386,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(400,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(462,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(478,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(490,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(513,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(533,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(564,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(579,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(713,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(758,17)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(779,17)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(801,17)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(828,17)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(845,17)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(863,17)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(909,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(920,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(942,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(1020,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(1171,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(1180,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Analyze_Light_Scattering_TM.f90(1258,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at Analyze_Light_Scattering_TM.f90(453,11)
+LOOP END
+
+LOOP BEGIN at Analyze_Light_Scattering_TM.f90(1006,6)
+   remark #25460: No loop optimizations reported
+LOOP END
+
+LOOP BEGIN at Analyze_Light_Scattering_TM.f90(1006,6)
+<Remainder>
+LOOP END
+
+LOOP BEGIN at Analyze_Light_Scattering_TM.f90(1059,6)
+   remark #25460: No loop optimizations reported
+LOOP END
+
+LOOP BEGIN at Analyze_Light_Scattering_TM.f90(1059,6)
+<Remainder>
+LOOP END
+
+LOOP BEGIN at Analyze_Light_Scattering_TM.f90(1090,11)
+   remark #25460: No loop optimizations reported
+LOOP END
+
+LOOP BEGIN at Analyze_Light_Scattering_TM.f90(1090,11)
+<Remainder>
+LOOP END
+
+LOOP BEGIN at Analyze_Light_Scattering_TM.f90(1095,11)
+   remark #25460: No loop optimizations reported
+
+   LOOP BEGIN at Analyze_Light_Scattering_TM.f90(1097,21)
+   LOOP END
+LOOP END
+
+LOOP BEGIN at Analyze_Light_Scattering_TM.f90(912,6)
+   remark #25460: No loop optimizations reported
+
+   LOOP BEGIN at Analyze_Light_Scattering_TM.f90(913,11)
+
+      LOOP BEGIN at Analyze_Light_Scattering_TM.f90(914,16)
+      LOOP END
+
+      LOOP BEGIN at Analyze_Light_Scattering_TM.f90(914,16)
+      LOOP END
+
+      LOOP BEGIN at Analyze_Light_Scattering_TM.f90(914,16)
+      LOOP END
+
+      LOOP BEGIN at Analyze_Light_Scattering_TM.f90(914,16)
+      LOOP END
+   LOOP END
+LOOP END
+
+LOOP BEGIN at Analyze_Light_Scattering_TM.f90(1023,6)
+   remark #25460: No loop optimizations reported
+LOOP END
+
+LOOP BEGIN at Analyze_Light_Scattering_TM.f90(1023,6)
+<Remainder>
+LOOP END
+
+LOOP BEGIN at Analyze_Light_Scattering_TM.f90(1174,6)
+   remark #25460: No loop optimizations reported
+LOOP END
+
+LOOP BEGIN at Analyze_Light_Scattering_TM.f90(1174,6)
+<Remainder>
+LOOP END
+
+LOOP BEGIN at Analyze_Light_Scattering_TM.f90(1261,6)
+   remark #25460: No loop optimizations reported
+LOOP END
+
+LOOP BEGIN at Analyze_Light_Scattering_TM.f90(1261,6)
+<Remainder>
+LOOP END
+===========================================================================

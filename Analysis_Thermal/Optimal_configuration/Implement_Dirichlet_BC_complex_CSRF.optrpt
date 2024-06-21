@@ -1,0 +1,77 @@
+
+Begin optimization report for: IMPLEMENT_DIRICHLET_BC_COMPLEX_CSRF
+
+    Report from: OpenMP optimizations [openmp]
+
+OpenMP Construct at Implement_Dirichlet_BC_complex_CSRF.f90(46,17)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Implement_Dirichlet_BC_complex_CSRF.f90(159,22)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Implement_Dirichlet_BC_complex_CSRF.f90(175,22)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Implement_Dirichlet_BC_complex_CSRF.f90(201,22)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Implement_Dirichlet_BC_complex_CSRF.f90(212,22)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Implement_Dirichlet_BC_complex_CSRF.f90(245,22)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at Implement_Dirichlet_BC_complex_CSRF.f90(121,11)
+   remark #25460: No loop optimizations reported
+
+   LOOP BEGIN at Implement_Dirichlet_BC_complex_CSRF.f90(122,16)
+      remark #25460: No loop optimizations reported
+   LOOP END
+LOOP END
+
+LOOP BEGIN at Implement_Dirichlet_BC_complex_CSRF.f90(121,11)
+   remark #25460: No loop optimizations reported
+
+   LOOP BEGIN at Implement_Dirichlet_BC_complex_CSRF.f90(122,16)
+      remark #25460: No loop optimizations reported
+   LOOP END
+LOOP END
+
+LOOP BEGIN at Implement_Dirichlet_BC_complex_CSRF.f90(144,11)
+   remark #25460: No loop optimizations reported
+
+   LOOP BEGIN at Implement_Dirichlet_BC_complex_CSRF.f90(149,16)
+      remark #25460: No loop optimizations reported
+   LOOP END
+
+   LOOP BEGIN at Implement_Dirichlet_BC_complex_CSRF.f90(149,16)
+   <Remainder>
+   LOOP END
+
+   LOOP BEGIN at Implement_Dirichlet_BC_complex_CSRF.f90(155,16)
+      remark #25460: No loop optimizations reported
+   LOOP END
+
+   LOOP BEGIN at Implement_Dirichlet_BC_complex_CSRF.f90(191,16)
+      remark #25460: No loop optimizations reported
+   LOOP END
+
+   LOOP BEGIN at Implement_Dirichlet_BC_complex_CSRF.f90(191,16)
+   <Remainder>
+   LOOP END
+
+   LOOP BEGIN at Implement_Dirichlet_BC_complex_CSRF.f90(236,16)
+      remark #25460: No loop optimizations reported
+   LOOP END
+
+   LOOP BEGIN at Implement_Dirichlet_BC_complex_CSRF.f90(236,16)
+   <Remainder>
+   LOOP END
+LOOP END
+
+LOOP BEGIN at Implement_Dirichlet_BC_complex_CSRF.f90(49,11)
+   remark #25460: No loop optimizations reported
+LOOP END
+
+LOOP BEGIN at Implement_Dirichlet_BC_complex_CSRF.f90(49,11)
+<Remainder>
+LOOP END
+===========================================================================

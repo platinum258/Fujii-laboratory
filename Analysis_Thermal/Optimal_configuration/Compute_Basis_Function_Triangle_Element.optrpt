@@ -1,0 +1,20 @@
+
+Begin optimization report for: COMPUTE_BASIS_FUNCTION_TRIANGLE_ELEMENT
+
+    Report from: OpenMP optimizations [openmp]
+
+OpenMP Construct at Compute_Basis_Function_Triangle_Element.f90(43,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Compute_Basis_Function_Triangle_Element.f90(56,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Compute_Basis_Function_Triangle_Element.f90(72,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Compute_Basis_Function_Triangle_Element.f90(83,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Compute_Basis_Function_Triangle_Element.f90(94,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Compute_Basis_Function_Triangle_Element.f90(117,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Compute_Basis_Function_Triangle_Element.f90(135,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+===========================================================================

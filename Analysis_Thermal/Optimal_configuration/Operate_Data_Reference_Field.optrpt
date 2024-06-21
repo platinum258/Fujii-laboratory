@@ -1,0 +1,18 @@
+
+Begin optimization report for: OPERATE_DATA_REFERENCE_FIELD
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at Operate_Data_Reference_Field.f90(210,11)
+   remark #25460: No loop optimizations reported
+LOOP END
+
+LOOP BEGIN at Operate_Data_Reference_Field.f90(218,11)
+   remark #25460: No loop optimizations reported
+LOOP END
+
+LOOP BEGIN at Operate_Data_Reference_Field.f90(218,11)
+<Remainder>
+LOOP END
+===========================================================================

@@ -1,0 +1,50 @@
+
+Begin optimization report for: PLOT_RESULT_ELEMENT_TRIANGLE
+
+    Report from: OpenMP optimizations [openmp]
+
+OpenMP Construct at Plot_Result_Element_Triangle.f90(211,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Plot_Result_Element_Triangle.f90(221,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Plot_Result_Element_Triangle.f90(266,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Plot_Result_Element_Triangle.f90(276,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Plot_Result_Element_Triangle.f90(286,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Plot_Result_Element_Triangle.f90(322,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Plot_Result_Element_Triangle.f90(371,17)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Plot_Result_Element_Triangle.f90(408,17)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Plot_Result_Element_Triangle.f90(452,17)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Plot_Result_Element_Triangle.f90(490,17)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at Plot_Result_Element_Triangle.f90(512,17)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at Plot_Result_Element_Triangle.f90(449,16)
+LOOP END
+
+LOOP BEGIN at Plot_Result_Element_Triangle.f90(279,6)
+   remark #25460: No loop optimizations reported
+LOOP END
+
+LOOP BEGIN at Plot_Result_Element_Triangle.f90(279,6)
+<Remainder>
+LOOP END
+
+LOOP BEGIN at Plot_Result_Element_Triangle.f90(289,6)
+   remark #25460: No loop optimizations reported
+LOOP END
+
+LOOP BEGIN at Plot_Result_Element_Triangle.f90(289,6)
+<Remainder>
+LOOP END
+===========================================================================

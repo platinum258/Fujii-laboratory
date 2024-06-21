@@ -1,0 +1,21 @@
+
+Begin optimization report for: COUNTER_NUMBER_NODE_IN_ELEMENT
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at Counter_Number_Node_Reference.f90(28,6)
+   remark #25460: No loop optimizations reported
+
+   LOOP BEGIN at Counter_Number_Node_Reference.f90(30,16)
+   LOOP END
+LOOP END
+
+LOOP BEGIN at Counter_Number_Node_Reference.f90(38,7)
+   remark #25460: No loop optimizations reported
+LOOP END
+
+LOOP BEGIN at Counter_Number_Node_Reference.f90(38,7)
+<Remainder>
+LOOP END
+===========================================================================

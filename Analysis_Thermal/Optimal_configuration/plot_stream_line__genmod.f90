@@ -1,0 +1,24 @@
+        !COMPILER-GENERATED INTERFACE MODULE: Fri Feb 16 19:09:52 2024
+        ! This source file is for reference only and may not completely
+        ! represent the generated interface used by the compiler.
+        MODULE PLOT_STREAM_LINE__genmod
+          INTERFACE 
+            SUBROUTINE PLOT_STREAM_LINE(FN,NUMBER_ELEMENT,NUMBER_LINE_X,&
+     &NUMBER_LINE_Y,RATIO_DEFAULT,POSITION_MINIMUM_PLOT,                &
+     &POSITION_MAXIMUM_PLOT,POSITION_NODE_PLOT_ELEMENT,                 &
+     &GRADIENT_IN_ELEMENT,OPTIMIZATION_STEP)
+              INTEGER(KIND=4), INTENT(IN) :: NUMBER_ELEMENT
+              INTEGER(KIND=4), INTENT(IN) :: FN
+              INTEGER(KIND=4), INTENT(IN) :: NUMBER_LINE_X
+              INTEGER(KIND=4), INTENT(IN) :: NUMBER_LINE_Y
+              REAL(KIND=8), INTENT(IN) :: RATIO_DEFAULT
+              REAL(KIND=8), INTENT(IN) :: POSITION_MINIMUM_PLOT(2)
+              REAL(KIND=8), INTENT(IN) :: POSITION_MAXIMUM_PLOT(2)
+              REAL(KIND=8), INTENT(IN) :: POSITION_NODE_PLOT_ELEMENT(2,3&
+     &,NUMBER_ELEMENT)
+              REAL(KIND=8), INTENT(IN) :: GRADIENT_IN_ELEMENT(2,        &
+     &NUMBER_ELEMENT)
+              INTEGER(KIND=4), INTENT(IN) :: OPTIMIZATION_STEP
+            END SUBROUTINE PLOT_STREAM_LINE
+          END INTERFACE 
+        END MODULE PLOT_STREAM_LINE__genmod

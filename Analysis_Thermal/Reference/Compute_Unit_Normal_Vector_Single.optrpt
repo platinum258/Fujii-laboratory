@@ -1,0 +1,9 @@
+
+Begin optimization report for: COMPUTE_UNIT_NORMAL_VECTOR_SINGLE
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at Compute_Unit_Normal_Vector_Single.f90(23,6)
+LOOP END
+===========================================================================

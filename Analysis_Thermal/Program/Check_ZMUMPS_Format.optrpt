@@ -1,0 +1,14 @@
+
+Begin optimization report for: CHECK_ZMUMPS_FORMAT
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at Check_ZMUMPS_Format.f90(122,6)
+   remark #25460: No loop optimizations reported
+LOOP END
+
+LOOP BEGIN at Check_ZMUMPS_Format.f90(122,6)
+<Remainder>
+LOOP END
+===========================================================================

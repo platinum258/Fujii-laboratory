@@ -1,0 +1,11 @@
+FEM_Data_0
+FEM_Data_0
+'../../Optimization/Optimal/result/'
+'../../Optimization/No_Structure/result/'
+1 # Number_Loop_Frequency
+0 # Number_Loop_IncidentAngle
+0 # Number_Loop_DielectricConstant
+0 # Number_Loop_Position_Dipole_X
+0 # Number_Loop_Position_Dipole_Y
+1 # Flag_No_Structure
+1 # Flag_Output_ElectricField

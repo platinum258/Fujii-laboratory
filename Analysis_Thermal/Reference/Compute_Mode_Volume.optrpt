@@ -1,0 +1,14 @@
+
+Begin optimization report for: COMPUTE_MODE_VOLUME
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at Compute_Mode_Volume.f90(36,6)
+   remark #25460: No loop optimizations reported
+LOOP END
+
+LOOP BEGIN at Compute_Mode_Volume.f90(36,6)
+<Remainder>
+LOOP END
+===========================================================================

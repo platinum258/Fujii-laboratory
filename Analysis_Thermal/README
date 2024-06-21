@@ -1,0 +1,11 @@
+
+Edit setting.sh
+
+sh exe_all.sh
+
+
+
+Program : Base Directory. 
+          This directory is copied as 'No_Structure' and 'Optimal' by setting.sh . 
+
+

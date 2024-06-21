@@ -1,0 +1,26 @@
+
+Begin optimization report for: DETECT_LINE_ON_WAVEGUIDE
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at Detect_Line_on_Waveguide.f90(61,6)
+   remark #25460: No loop optimizations reported
+
+   LOOP BEGIN at Detect_Line_on_Waveguide.f90(63,16)
+      remark #25460: No loop optimizations reported
+   LOOP END
+
+   LOOP BEGIN at Detect_Line_on_Waveguide.f90(63,16)
+      remark #25460: No loop optimizations reported
+   LOOP END
+
+   LOOP BEGIN at Detect_Line_on_Waveguide.f90(63,16)
+      remark #25460: No loop optimizations reported
+   LOOP END
+
+   LOOP BEGIN at Detect_Line_on_Waveguide.f90(63,16)
+   <Remainder>
+   LOOP END
+LOOP END
+===========================================================================

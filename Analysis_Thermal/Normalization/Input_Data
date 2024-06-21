@@ -1,0 +1,22 @@
+FEM_Data_Interval_001000
+FEM_Data_Interval_001000
+FEM_Data_Interval_001000
+'../../../Program_TC_Density/Final/V0.4_H1/'
+'../../../Program_TC_Density/Final/V0.4_H1/'
+'../../../Program_TC_Density/Final/V0.4_H1/'
+0 # Number_Loop_Frequency
+0 # Number_Loop_IncidentAngle
+0 # Number_Loop_DielectricConstant
+0 # Number_Loop_Position_Source_X
+0 # Number_Loop_Position_Source_Y
+1 # Flag_Structure
+0
+0  # Flag_Plot_Configuration
+0  # Flag_Plot_Mesh_Configuration
+0 # Flag_Output_ElectricField
+0 # Flag_Plot_EFD_Configuration
+0 # Flag_Plot_EFD_OC_PoyntingVector
+Result_Normalization.dat # File_Name_Result_Normalization
+'../Normalization/' # File_Pass_Result_Normalization
+'../Reference/' # File_Pass_Reference_Field
+1 # Flag_Reference_Device

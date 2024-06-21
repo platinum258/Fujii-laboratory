@@ -1,0 +1,659 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  ms/call  ms/call  name    
+  7.74      4.33     4.33       12   360.83   360.83  zmumps_141_
+  2.15      5.53     1.20   945417     0.00     0.00  zmumps_363_
+  1.25      6.23     0.70                             _fini
+  1.16      6.88     0.65     3401     0.19     0.19  zmumps_364_
+  0.82      7.34     0.46                             improveDDSep
+  0.79      7.78     0.44        6    73.33   479.02  zmumps_142_
+  0.75      8.20     0.42      849     0.49     2.79  zmumps_26_
+  0.54      8.50     0.30                             zmumps_80_
+  0.43      8.74     0.24   538522     0.00     0.00  zmumps_205_
+  0.41      8.97     0.23                             zmumps_301_
+  0.36      9.17     0.20        6    33.33    33.33  zmumps_206_
+  0.32      9.35     0.18                             initialDDSep
+  0.23      9.48     0.13        6    21.67    21.67  zmumps_320_
+  0.21      9.60     0.12                             zmumps_282_
+  0.18      9.70     0.10       30     3.33     3.33  zmumps_xsyr_
+  0.18      9.80     0.10                             zmumps_289_
+  0.13      9.87     0.07        6    11.67    11.67  zmumps_462_
+  0.13      9.94     0.07                             zmumps_218_
+  0.11     10.00     0.06        6    10.00    10.00  zmumps_230_
+  0.11     10.06     0.06        6    10.00    10.00  zmumps_224_
+  0.09     10.11     0.05                             zmumps_763_
+  0.07     10.15     0.04  1885302     0.00     0.00  zmumps_95_
+  0.07     10.19     0.04                             cvt_ieee_s_to_text_ex
+  0.07     10.23     0.04                             mumps_125_
+  0.07     10.27     0.04                             zmumps_302_
+  0.07     10.31     0.04                             zmumps_load_mp_zmumps_185_
+  0.05     10.34     0.03       12     2.50     2.50  zmumps_759_
+  0.05     10.37     0.03        6     5.00    53.33  zmumps_222_
+  0.05     10.40     0.03                             for__cvt_value
+  0.05     10.43     0.03                             mumps_static_mappingmumps_369_mp_mumps_367_
+  0.05     10.46     0.03                             updateW2B
+  0.05     10.49     0.03                             zmumps_136_
+  0.05     10.52     0.03                             zmumps_223_
+  0.05     10.55     0.03                             zmumps_249_
+  0.04     10.57     0.02   405406     0.00     0.00  compute_incident_wave_
+  0.04     10.59     0.02                             checkDDSep
+  0.04     10.61     0.02                             emit_comp_fmt
+  0.04     10.63     0.02                             for__format_value
+  0.04     10.65     0.02                             mumps_static_mappingmumps_369_mp_mumps_478_
+  0.04     10.67     0.02                             zmumps_119_
+  0.04     10.69     0.02                             zmumps_ooc_buffer_mp_zmumps_669_
+  0.02     10.70     0.01   134328     0.00     0.00  zmumps_687_
+  0.02     10.71     0.01        6     1.67     6.67  zmumps_274_
+  0.02     10.72     0.01        6     1.67     1.67  zmumps_700_
+  0.02     10.73     0.01                             MAIN__
+  0.02     10.74     0.01                             findPseudoPeripheralDomain
+  0.02     10.75     0.01                             for__format_compiler
+  0.02     10.76     0.01                             mumps_503_
+  0.02     10.77     0.01                             zmumps_245_
+  0.02     10.78     0.01                             zmumps_257_
+  0.02     10.79     0.01                             zmumps_285_
+  0.02     10.80     0.01                             zmumps_286_
+  0.02     10.81     0.01                             zmumps_42_
+  0.02     10.82     0.01                             zmumps_547_
+  0.02     10.83     0.01                             zmumps_549_
+  0.02     10.84     0.01                             zmumps_638_
+  0.02     10.85     0.01                             zmumps_639_
+  0.02     10.86     0.01                             zmumps_812_
+  0.02     10.87     0.01                             zmumps_comm_buffer_mp_zmumps_71_
+  0.02     10.88     0.01                             zmumps_load_mp_zmumps_461_
+  0.00     10.88     0.00   546238     0.00     0.00  format_local_global_zmumps_
+  0.00     10.88     0.00      384     0.00     0.00  zmumps_673_
+  0.00     10.88     0.00      268     0.00     0.00  zmumps_660_
+  0.00     10.88     0.00      160     0.00     0.00  plot_result_element_triangle_
+  0.00     10.88     0.00      122     0.00     0.00  analyze_light_scattering_tm_
+  0.00     10.88     0.00       64     0.00     0.00  zmumps_280_
+  0.00     10.88     0.00       42     0.00     0.00  zmumps_454_
+  0.00     10.88     0.00       20     0.00     0.00  zmumps_100_
+  0.00     10.88     0.00       20     0.00     0.00  zmumps_203_
+  0.00     10.88     0.00       20     0.00     0.02  zmumps_655_
+  0.00     10.88     0.00       12     0.00     0.00  zmumps_36_
+  0.00     10.88     0.00        6     0.00     0.00  zmumps_101_
+  0.00     10.88     0.00        6     0.00     0.00  zmumps_121_
+  0.00     10.88     0.00        6     0.00     0.00  zmumps_140_
+  0.00     10.88     0.00        6     0.00     0.00  zmumps_226_
+  0.00     10.88     0.00        6     0.00     0.00  zmumps_254_
+  0.00     10.88     0.00        6     0.00     0.00  zmumps_326_
+  0.00     10.88     0.00        4     0.00     0.00  zmumps_240_
+  0.00     10.88     0.00        4     0.00     0.00  zmumps_parallel_analysis_mp_zmumps_781_
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+ 
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this 
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 2 byte(s) for 0.09% of 10.88 seconds
+
+index % time    self  children    called     name
+                                   1             MAIN__ [1]
+[1]     72.8    0.01    7.92       0+1       MAIN__ [1]
+                4.33    0.00      12/12          zmumps_141_ [2]
+                0.44    2.43       6/6           zmumps_142_ [3]
+                0.03    0.29       6/6           zmumps_222_ [10]
+                0.20    0.00       6/6           zmumps_206_ [15]
+                0.01    0.07      29/849         zmumps_26_ [4]
+                0.06    0.00       6/6           zmumps_224_ [23]
+                0.01    0.03       6/6           zmumps_274_ [26]
+                0.01    0.00       6/6           zmumps_700_ [45]
+                0.00    0.00       1/3401        zmumps_364_ [7]
+                0.00    0.00       1/945417      zmumps_363_ [5]
+                0.00    0.00       6/6           zmumps_254_ [89]
+                0.00    0.00       6/6           zmumps_121_ [86]
+                0.00    0.00       6/6           zmumps_326_ [90]
+                0.00    0.00       6/6           zmumps_140_ [87]
+                                   1             MAIN__ [1]
+-----------------------------------------------
+                4.33    0.00      12/12          MAIN__ [1]
+[2]     39.8    4.33    0.00      12         zmumps_141_ [2]
+-----------------------------------------------
+                0.44    2.43       6/6           MAIN__ [1]
+[3]     26.4    0.44    2.43       6         zmumps_142_ [3]
+                0.41    1.88     820/849         zmumps_26_ [4]
+                0.12    0.00  274259/538522      zmumps_205_ [13]
+                0.02    0.00 1092513/1885302     zmumps_95_ [25]
+                0.00    0.00       6/6           zmumps_101_ [85]
+-----------------------------------------------
+                                   2             zmumps_26_ [4]
+                0.01    0.07      29/849         MAIN__ [1]
+                0.41    1.88     820/849         zmumps_142_ [3]
+[4]     21.8    0.42    1.95     849+2       zmumps_26_ [4]
+                0.69    0.04  540012/945417      zmumps_363_ [5]
+                0.65    0.00    3400/3401        zmumps_364_ [7]
+                0.02    0.54  405000/405406      compute_incident_wave_ [8]
+                0.01    0.00  134328/134328      zmumps_687_ [44]
+                0.00    0.00     384/384         zmumps_673_ [61]
+                0.00    0.00      20/20          zmumps_655_ [62]
+                0.00    0.00     268/268         zmumps_660_ [79]
+                                   2             zmumps_26_ [4]
+-----------------------------------------------
+                0.00    0.00       1/945417      MAIN__ [1]
+                0.00    0.00      20/945417      zmumps_745_ [65]
+                0.00    0.00     384/945417      zmumps_673_ [61]
+                0.51    0.03  405000/945417      compute_incident_wave_ [8]
+                0.69    0.04  540012/945417      zmumps_26_ [4]
+[5]     11.7    1.20    0.07  945417         zmumps_363_ [5]
+                0.07    0.00       6/6           zmumps_462_ [20]
+-----------------------------------------------
+                                                 <spontaneous>
+[6]      6.4    0.70    0.00                 _fini [6]
+-----------------------------------------------
+                0.00    0.00       1/3401        MAIN__ [1]
+                0.65    0.00    3400/3401        zmumps_26_ [4]
+[7]      6.0    0.65    0.00    3401         zmumps_364_ [7]
+-----------------------------------------------
+                                  16             compute_incident_wave_ [8]
+                0.00    0.00       3/405406      logf.A [77]
+                0.00    0.00       3/405406      log.A [76]
+                0.00    0.00       4/405406      zmumps_144_ [72]
+                0.00    0.00       4/405406      zmumps_176_ [73]
+                0.00    0.00       4/405406      zmumps_242_ [74]
+                0.00    0.00       4/405406      zmumps_464_ [75]
+                0.00    0.00       8/405406      __libm_error_support [71]
+                0.00    0.00       8/405406      cos.N [67]
+                0.00    0.00       8/405406      zmumps_39_ [70]
+                0.00    0.00       8/405406      zmumps_264_ [69]
+                0.00    0.00       8/405406      zmumps_195_ [68]
+                0.00    0.00      16/405406      check_zmumps_format_ [66]
+                0.00    0.00      28/405406      plot_result_element_triangle_ [63]
+                0.00    0.00      76/405406      analyze_light_scattering_tm_ [64]
+                0.00    0.00     224/405406      zmumps_655_ [62]
+                0.02    0.54  405000/405406      zmumps_26_ [4]
+[8]      5.2    0.02    0.54  405406+16      compute_incident_wave_ [8]
+                0.51    0.03  405000/945417      zmumps_363_ [5]
+                0.00    0.00  405000/546238      format_local_global_zmumps_ [78]
+                                  16             compute_incident_wave_ [8]
+-----------------------------------------------
+                                                 <spontaneous>
+[9]      4.2    0.46    0.00                 improveDDSep [9]
+-----------------------------------------------
+                0.03    0.29       6/6           MAIN__ [1]
+[10]     2.9    0.03    0.29       6         zmumps_222_ [10]
+                0.13    0.00       6/6           zmumps_320_ [17]
+                0.10    0.00      30/30          zmumps_xsyr_ [18]
+                0.06    0.00       6/6           zmumps_230_ [22]
+                0.00    0.00       6/6           zmumps_226_ [88]
+-----------------------------------------------
+                                                 <spontaneous>
+[11]     2.8    0.30    0.00                 zmumps_80_ [11]
+-----------------------------------------------
+                                                 <spontaneous>
+[12]     2.3    0.12    0.13                 zmumps_282_ [12]
+                0.12    0.00  264263/538522      zmumps_205_ [13]
+                0.02    0.00  792789/1885302     zmumps_95_ [25]
+-----------------------------------------------
+                0.12    0.00  264263/538522      zmumps_282_ [12]
+                0.12    0.00  274259/538522      zmumps_142_ [3]
+[13]     2.2    0.24    0.00  538522         zmumps_205_ [13]
+-----------------------------------------------
+                                                 <spontaneous>
+[14]     2.1    0.23    0.00                 zmumps_301_ [14]
+-----------------------------------------------
+                0.20    0.00       6/6           MAIN__ [1]
+[15]     1.8    0.20    0.00       6         zmumps_206_ [15]
+-----------------------------------------------
+                                                 <spontaneous>
+[16]     1.7    0.18    0.00                 initialDDSep [16]
+-----------------------------------------------
+                0.13    0.00       6/6           zmumps_222_ [10]
+[17]     1.2    0.13    0.00       6         zmumps_320_ [17]
+-----------------------------------------------
+                0.10    0.00      30/30          zmumps_222_ [10]
+[18]     0.9    0.10    0.00      30         zmumps_xsyr_ [18]
+-----------------------------------------------
+                                                 <spontaneous>
+[19]     0.9    0.10    0.00                 zmumps_289_ [19]
+-----------------------------------------------
+                0.07    0.00       6/6           zmumps_363_ [5]
+[20]     0.6    0.07    0.00       6         zmumps_462_ [20]
+-----------------------------------------------
+                                                 <spontaneous>
+[21]     0.6    0.07    0.00                 zmumps_218_ [21]
+-----------------------------------------------
+                0.06    0.00       6/6           zmumps_222_ [10]
+[22]     0.6    0.06    0.00       6         zmumps_230_ [22]
+-----------------------------------------------
+                0.06    0.00       6/6           MAIN__ [1]
+[23]     0.6    0.06    0.00       6         zmumps_224_ [23]
+-----------------------------------------------
+                                                 <spontaneous>
+[24]     0.5    0.05    0.00                 zmumps_763_ [24]
+-----------------------------------------------
+                0.02    0.00  792789/1885302     zmumps_282_ [12]
+                0.02    0.00 1092513/1885302     zmumps_142_ [3]
+[25]     0.4    0.04    0.00 1885302         zmumps_95_ [25]
+-----------------------------------------------
+                0.01    0.03       6/6           MAIN__ [1]
+[26]     0.4    0.01    0.03       6         zmumps_274_ [26]
+                0.03    0.00      12/12          zmumps_759_ [31]
+-----------------------------------------------
+                                                 <spontaneous>
+[27]     0.4    0.04    0.00                 cvt_ieee_s_to_text_ex [27]
+-----------------------------------------------
+                                                 <spontaneous>
+[28]     0.4    0.04    0.00                 mumps_125_ [28]
+-----------------------------------------------
+                                                 <spontaneous>
+[29]     0.4    0.04    0.00                 zmumps_302_ [29]
+-----------------------------------------------
+                                                 <spontaneous>
+[30]     0.4    0.04    0.00                 zmumps_load_mp_zmumps_185_ [30]
+-----------------------------------------------
+                0.03    0.00      12/12          zmumps_274_ [26]
+[31]     0.3    0.03    0.00      12         zmumps_759_ [31]
+-----------------------------------------------
+                                                 <spontaneous>
+[32]     0.3    0.03    0.00                 for__cvt_value [32]
+-----------------------------------------------
+                                                 <spontaneous>
+[33]     0.3    0.03    0.00                 mumps_static_mappingmumps_369_mp_mumps_367_ [33]
+-----------------------------------------------
+                                                 <spontaneous>
+[34]     0.3    0.03    0.00                 updateW2B [34]
+-----------------------------------------------
+                                                 <spontaneous>
+[35]     0.3    0.03    0.00                 zmumps_136_ [35]
+-----------------------------------------------
+                                                 <spontaneous>
+[36]     0.3    0.03    0.00                 zmumps_223_ [36]
+-----------------------------------------------
+                                                 <spontaneous>
+[37]     0.3    0.03    0.00                 zmumps_249_ [37]
+-----------------------------------------------
+                                                 <spontaneous>
+[38]     0.2    0.02    0.00                 checkDDSep [38]
+-----------------------------------------------
+                                                 <spontaneous>
+[39]     0.2    0.02    0.00                 emit_comp_fmt [39]
+-----------------------------------------------
+                                                 <spontaneous>
+[40]     0.2    0.02    0.00                 for__format_value [40]
+-----------------------------------------------
+                                                 <spontaneous>
+[41]     0.2    0.02    0.00                 mumps_static_mappingmumps_369_mp_mumps_478_ [41]
+-----------------------------------------------
+                                                 <spontaneous>
+[42]     0.2    0.02    0.00                 zmumps_119_ [42]
+-----------------------------------------------
+                                                 <spontaneous>
+[43]     0.2    0.02    0.00                 zmumps_ooc_buffer_mp_zmumps_669_ [43]
+-----------------------------------------------
+                0.01    0.00  134328/134328      zmumps_26_ [4]
+[44]     0.1    0.01    0.00  134328         zmumps_687_ [44]
+                0.00    0.00  140306/546238      format_local_global_zmumps_ [78]
+-----------------------------------------------
+                0.01    0.00       6/6           MAIN__ [1]
+[45]     0.1    0.01    0.00       6         zmumps_700_ [45]
+-----------------------------------------------
+                                                 <spontaneous>
+[46]     0.1    0.01    0.00                 findPseudoPeripheralDomain [46]
+-----------------------------------------------
+                                                 <spontaneous>
+[47]     0.1    0.01    0.00                 for__format_compiler [47]
+-----------------------------------------------
+                                                 <spontaneous>
+[48]     0.1    0.01    0.00                 mumps_503_ [48]
+-----------------------------------------------
+                                                 <spontaneous>
+[49]     0.1    0.01    0.00                 zmumps_245_ [49]
+-----------------------------------------------
+                                                 <spontaneous>
+[50]     0.1    0.01    0.00                 zmumps_257_ [50]
+-----------------------------------------------
+                                                 <spontaneous>
+[51]     0.1    0.01    0.00                 zmumps_285_ [51]
+-----------------------------------------------
+                                                 <spontaneous>
+[52]     0.1    0.01    0.00                 zmumps_286_ [52]
+-----------------------------------------------
+                                                 <spontaneous>
+[53]     0.1    0.01    0.00                 zmumps_42_ [53]
+-----------------------------------------------
+                                                 <spontaneous>
+[54]     0.1    0.01    0.00                 zmumps_547_ [54]
+-----------------------------------------------
+                                                 <spontaneous>
+[55]     0.1    0.01    0.00                 zmumps_549_ [55]
+-----------------------------------------------
+                                                 <spontaneous>
+[56]     0.1    0.01    0.00                 zmumps_638_ [56]
+-----------------------------------------------
+                                                 <spontaneous>
+[57]     0.1    0.01    0.00                 zmumps_639_ [57]
+-----------------------------------------------
+                                                 <spontaneous>
+[58]     0.1    0.01    0.00                 zmumps_812_ [58]
+-----------------------------------------------
+                                                 <spontaneous>
+[59]     0.1    0.01    0.00                 zmumps_comm_buffer_mp_zmumps_71_ [59]
+-----------------------------------------------
+                                                 <spontaneous>
+[60]     0.1    0.01    0.00                 zmumps_load_mp_zmumps_461_ [60]
+-----------------------------------------------
+                0.00    0.00     384/384         zmumps_26_ [4]
+[61]     0.0    0.00    0.00     384         zmumps_673_ [61]
+                0.00    0.00     384/945417      zmumps_363_ [5]
+-----------------------------------------------
+                0.00    0.00      20/20          zmumps_26_ [4]
+[62]     0.0    0.00    0.00      20         zmumps_655_ [62]
+                0.00    0.00     224/405406      compute_incident_wave_ [8]
+                0.00    0.00     160/160         plot_result_element_triangle_ [63]
+-----------------------------------------------
+                0.00    0.00     160/160         zmumps_655_ [62]
+[63]     0.0    0.00    0.00     160         plot_result_element_triangle_ [63]
+                0.00    0.00     122/122         analyze_light_scattering_tm_ [64]
+                0.00    0.00      28/405406      compute_incident_wave_ [8]
+                0.00    0.00     108/546238      format_local_global_zmumps_ [78]
+                0.00    0.00      64/64          zmumps_280_ [80]
+                0.00    0.00      42/42          zmumps_454_ [81]
+-----------------------------------------------
+                0.00    0.00     122/122         plot_result_element_triangle_ [63]
+[64]     0.0    0.00    0.00     122         analyze_light_scattering_tm_ [64]
+                0.00    0.00      76/405406      compute_incident_wave_ [8]
+                0.00    0.00     176/546238      format_local_global_zmumps_ [78]
+-----------------------------------------------
+                                                 <spontaneous>
+[65]     0.0    0.00    0.00                 zmumps_745_ [65]
+                0.00    0.00      20/945417      zmumps_363_ [5]
+-----------------------------------------------
+                                                 <spontaneous>
+[66]     0.0    0.00    0.00                 check_zmumps_format_ [66]
+                0.00    0.00      16/405406      compute_incident_wave_ [8]
+                0.00    0.00      54/546238      format_local_global_zmumps_ [78]
+-----------------------------------------------
+                                                 <spontaneous>
+[67]     0.0    0.00    0.00                 cos.N [67]
+                0.00    0.00       8/405406      compute_incident_wave_ [8]
+                0.00    0.00       2/546238      format_local_global_zmumps_ [78]
+-----------------------------------------------
+                                                 <spontaneous>
+[68]     0.0    0.00    0.00                 zmumps_195_ [68]
+                0.00    0.00       8/405406      compute_incident_wave_ [8]
+                0.00    0.00      72/546238      format_local_global_zmumps_ [78]
+-----------------------------------------------
+                                                 <spontaneous>
+[69]     0.0    0.00    0.00                 zmumps_264_ [69]
+                0.00    0.00       8/405406      compute_incident_wave_ [8]
+                0.00    0.00      31/546238      format_local_global_zmumps_ [78]
+-----------------------------------------------
+                                                 <spontaneous>
+[70]     0.0    0.00    0.00                 zmumps_39_ [70]
+                0.00    0.00       8/405406      compute_incident_wave_ [8]
+-----------------------------------------------
+                                                 <spontaneous>
+[71]     0.0    0.00    0.00                 __libm_error_support [71]
+                0.00    0.00       8/405406      compute_incident_wave_ [8]
+-----------------------------------------------
+                                                 <spontaneous>
+[72]     0.0    0.00    0.00                 zmumps_144_ [72]
+                0.00    0.00       4/405406      compute_incident_wave_ [8]
+                0.00    0.00       4/546238      format_local_global_zmumps_ [78]
+-----------------------------------------------
+                                                 <spontaneous>
+[73]     0.0    0.00    0.00                 zmumps_176_ [73]
+                0.00    0.00       4/405406      compute_incident_wave_ [8]
+                0.00    0.00       4/546238      format_local_global_zmumps_ [78]
+-----------------------------------------------
+                                                 <spontaneous>
+[74]     0.0    0.00    0.00                 zmumps_242_ [74]
+                0.00    0.00       4/405406      compute_incident_wave_ [8]
+-----------------------------------------------
+                                                 <spontaneous>
+[75]     0.0    0.00    0.00                 zmumps_464_ [75]
+                0.00    0.00       4/405406      compute_incident_wave_ [8]
+-----------------------------------------------
+                                                 <spontaneous>
+[76]     0.0    0.00    0.00                 log.A [76]
+                0.00    0.00       3/405406      compute_incident_wave_ [8]
+-----------------------------------------------
+                                                 <spontaneous>
+[77]     0.0    0.00    0.00                 logf.A [77]
+                0.00    0.00       3/405406      compute_incident_wave_ [8]
+-----------------------------------------------
+                0.00    0.00       1/546238      plot_gradation_element_ [883]
+                0.00    0.00       1/546238      plot_gradation_element_monocromatic_ [884]
+                0.00    0.00       1/546238      cos.L [199]
+                0.00    0.00       1/546238      floor.A [309]
+                0.00    0.00       1/546238      __libm_reduce_pio2d [1577]
+                0.00    0.00       1/546238      log10.L [523]
+                0.00    0.00       1/546238      zmumps_238_ [1087]
+                0.00    0.00       2/546238      plot_element_inhomogeneous_ [881]
+                0.00    0.00       2/546238      plot_element_inhomogeneous_3_node_ [882]
+                0.00    0.00       2/546238      compute_objective_function_ [189]
+                0.00    0.00       2/546238      atan2 [157]
+                0.00    0.00       2/546238      write_message [1020]
+                0.00    0.00       2/546238      __libm_exp_k64 [1574]
+                0.00    0.00       2/546238      __libm_mul_k64 [1576]
+                0.00    0.00       2/546238      __libm_sincos_k64 [1581]
+                0.00    0.00       2/546238      logf [524]
+                0.00    0.00       2/546238      ceil.A [174]
+                0.00    0.00       2/546238      cos.A [198]
+                0.00    0.00       2/546238      cos.N [67]
+                0.00    0.00       2/546238      expf.L [297]
+                0.00    0.00       2/546238      expf.A [296]
+                0.00    0.00       2/546238      log10.A [522]
+                0.00    0.00       2/546238      log.L [520]
+                0.00    0.00       2/546238      pow.A [886]
+                0.00    0.00       2/546238      zmumps_531_ [1159]
+                0.00    0.00       2/546238      zmumps_530_ [1158]
+                0.00    0.00       2/546238      zmumps_619_ [1178]
+                0.00    0.00       3/546238      zmumps_694_ [1222]
+                0.00    0.00       4/546238      implement_dirichlet_bc_complex_csrf_ [502]
+                0.00    0.00       4/546238      output_error_ [847]
+                0.00    0.00       4/546238      cexp.A [178]
+                0.00    0.00       4/546238      zmumps_539_ [1164]
+                0.00    0.00       4/546238      zmumps_40_ [1137]
+                0.00    0.00       4/546238      zmumps_144_ [72]
+                0.00    0.00       4/546238      zmumps_176_ [73]
+                0.00    0.00       4/546238      zmumps_20_ [1066]
+                0.00    0.00       4/546238      zmumps_parallel_analysis_mp_zmumps_775_ [1419]
+                0.00    0.00       4/546238      zmumps_37_ [1135]
+                0.00    0.00       6/546238      zmumps_268_ [1103]
+                0.00    0.00       6/546238      zmumps_451_ [1146]
+                0.00    0.00       7/546238      zmumps_447_ [1142]
+                0.00    0.00       8/546238      pow.L [887]
+                0.00    0.00       8/546238      zmumps_454_ [81]
+                0.00    0.00      11/546238      zmumps_180_ [1054]
+                0.00    0.00      11/546238      zmumps_698_ [1223]
+                0.00    0.00      15/546238      zmumps_143_ [1039]
+                0.00    0.00      20/546238      zmumps_203_ [83]
+                0.00    0.00      20/546238      zmumps_210_ [1067]
+                0.00    0.00      21/546238      zmumps_444_ [1139]
+                0.00    0.00      31/546238      zmumps_264_ [69]
+                0.00    0.00      54/546238      check_zmumps_format_ [66]
+                0.00    0.00      72/546238      zmumps_195_ [68]
+                0.00    0.00     108/546238      plot_result_element_triangle_ [63]
+                0.00    0.00     128/546238      zmumps_662_ [1206]
+                0.00    0.00     140/546238      zmumps_663_ [1207]
+                0.00    0.00     176/546238      analyze_light_scattering_tm_ [64]
+                0.00    0.00  140306/546238      zmumps_687_ [44]
+                0.00    0.00  405000/546238      compute_incident_wave_ [8]
+[78]     0.0    0.00    0.00  546238         format_local_global_zmumps_ [78]
+-----------------------------------------------
+                0.00    0.00     268/268         zmumps_26_ [4]
+[79]     0.0    0.00    0.00     268         zmumps_660_ [79]
+-----------------------------------------------
+                0.00    0.00      64/64          plot_result_element_triangle_ [63]
+[80]     0.0    0.00    0.00      64         zmumps_280_ [80]
+-----------------------------------------------
+                0.00    0.00      42/42          plot_result_element_triangle_ [63]
+[81]     0.0    0.00    0.00      42         zmumps_454_ [81]
+                0.00    0.00       8/546238      format_local_global_zmumps_ [78]
+-----------------------------------------------
+                0.00    0.00      20/20          zmumps_702_ [1226]
+[82]     0.0    0.00    0.00      20         zmumps_100_ [82]
+-----------------------------------------------
+                0.00    0.00      20/20          compute_objective_function_ [189]
+[83]     0.0    0.00    0.00      20         zmumps_203_ [83]
+                0.00    0.00      20/546238      format_local_global_zmumps_ [78]
+-----------------------------------------------
+                0.00    0.00      12/12          zmumps_452_ [1147]
+[84]     0.0    0.00    0.00      12         zmumps_36_ [84]
+-----------------------------------------------
+                0.00    0.00       6/6           zmumps_142_ [3]
+[85]     0.0    0.00    0.00       6         zmumps_101_ [85]
+-----------------------------------------------
+                0.00    0.00       6/6           MAIN__ [1]
+[86]     0.0    0.00    0.00       6         zmumps_121_ [86]
+-----------------------------------------------
+                0.00    0.00       6/6           MAIN__ [1]
+[87]     0.0    0.00    0.00       6         zmumps_140_ [87]
+-----------------------------------------------
+                0.00    0.00       6/6           zmumps_222_ [10]
+[88]     0.0    0.00    0.00       6         zmumps_226_ [88]
+-----------------------------------------------
+                0.00    0.00       6/6           MAIN__ [1]
+[89]     0.0    0.00    0.00       6         zmumps_254_ [89]
+-----------------------------------------------
+                0.00    0.00       6/6           MAIN__ [1]
+[90]     0.0    0.00    0.00       6         zmumps_326_ [90]
+-----------------------------------------------
+                0.00    0.00       4/4           zmumps_452_ [1147]
+[91]     0.0    0.00    0.00       4         zmumps_240_ [91]
+-----------------------------------------------
+                0.00    0.00       4/4           zmumps_452_ [1147]
+[92]     0.0    0.00    0.00       4         zmumps_parallel_analysis_mp_zmumps_781_ [92]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+
+Index by function name
+
+   [1] MAIN__                  [3] zmumps_142_             [7] zmumps_364_
+   [6] _fini                  [83] zmumps_203_            [84] zmumps_36_
+  [64] analyze_light_scattering_tm_ [13] zmumps_205_      [53] zmumps_42_
+  [38] checkDDSep             [15] zmumps_206_            [81] zmumps_454_
+   [8] compute_incident_wave_ [21] zmumps_218_            [20] zmumps_462_
+  [27] cvt_ieee_s_to_text_ex  [10] zmumps_222_            [54] zmumps_547_
+  [39] emit_comp_fmt          [36] zmumps_223_            [55] zmumps_549_
+  [46] findPseudoPeripheralDomain [23] zmumps_224_        [56] zmumps_638_
+  [32] for__cvt_value         [88] zmumps_226_            [57] zmumps_639_
+  [47] for__format_compiler   [22] zmumps_230_            [62] zmumps_655_
+  [40] for__format_value      [91] zmumps_240_            [79] zmumps_660_
+  [78] format_local_global_zmumps_ [49] zmumps_245_       [61] zmumps_673_
+   [9] improveDDSep           [37] zmumps_249_            [44] zmumps_687_
+  [16] initialDDSep           [89] zmumps_254_            [45] zmumps_700_
+  [28] mumps_125_             [50] zmumps_257_            [31] zmumps_759_
+  [48] mumps_503_              [4] zmumps_26_             [24] zmumps_763_
+  [33] mumps_static_mappingmumps_369_mp_mumps_367_ [26] zmumps_274_ [11] zmumps_80_
+  [41] mumps_static_mappingmumps_369_mp_mumps_478_ [80] zmumps_280_ [58] zmumps_812_
+  [63] plot_result_element_triangle_ [12] zmumps_282_     [25] zmumps_95_
+  [34] updateW2B              [51] zmumps_285_            [59] zmumps_comm_buffer_mp_zmumps_71_
+  [82] zmumps_100_            [52] zmumps_286_            [30] zmumps_load_mp_zmumps_185_
+  [85] zmumps_101_            [19] zmumps_289_            [60] zmumps_load_mp_zmumps_461_
+  [42] zmumps_119_            [14] zmumps_301_            [43] zmumps_ooc_buffer_mp_zmumps_669_
+  [86] zmumps_121_            [29] zmumps_302_            [92] zmumps_parallel_analysis_mp_zmumps_781_
+  [35] zmumps_136_            [17] zmumps_320_            [18] zmumps_xsyr_
+  [87] zmumps_140_            [90] zmumps_326_
+   [2] zmumps_141_             [5] zmumps_363_

@@ -1,0 +1,8 @@
+
+Begin optimization report for: FORMAT_LOCAL_GLOBAL_ZMUMPS
+
+    Report from: OpenMP optimizations [openmp]
+
+OpenMP Construct at Format_Local_Global_ZMUMPS.f90(114,12)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+===========================================================================
