@@ -19,9 +19,9 @@ if [ $dev -eq 0 ] ; then
      File_Name_Optimal=FEM_Data_Interval_001000
      File_Name_Normalization=FEM_Data_Interval_001000
      File_Name_Reference=FEM_Data_Interval_001000
-     Pass_InputData_Optimal='../../../Program_TC_Density/Final/V0.4_H1/'
-     Pass_InputData_Normalization='../../../Program_TC_Density/Final/V0.4_H1/'
-     Pass_InputData_Reference='../../../Program_TC_Density/Final/V0.4_H1/'
+     Pass_InputData_Optimal='../h_2xt'
+     Pass_InputData_Normalization='../h_2xt'
+     Pass_InputData_Reference='../h_2xt'
 
      Flag_Theoretical_Solution=0
      Flag_Reference_Device=1

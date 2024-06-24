@@ -118,6 +118,32 @@ program thermalcloak
     
     call Generate_Finite_Element(nelx,nely,mnx,mny,mxx,mxy,Number_Element,Number_SElement,Number_Node,&
     xcoord,ycoord,nodex,nodex_s,nesc,eid,r_designarea,r_ins)
+
+    iw=101
+    open(iw,file='FEM_Meshdata.txt',status='replace')
+      write(iw,*) 1, "# Flag_Electrical_Insulation_BC"
+      write(iw,*) Number_Node, "# The Number of Nodes"
+      write(iw,*) Number_Element, "# The Number of Triangle Element"
+      write(iw,*) 6, "# Maximum Number of Elements sharing one Nodes"
+      write(iw,*) mnx, "Minimal Value of X"
+      write(iw,*) mny, "Minimal Value of Y"
+      write(iw,*) mxx, "Maximum Value of X"
+      write(iw,*) mxy, "Maximum Value of Y"
+
+      do j=1,Number_Node
+        write(iw,*) j,xcoord(j),ycoord(j)
+      end do
+
+      do i=1,Number_Element
+        write(iw,*) i,eid(i),nodex(1,i),nodex(2,i),nodex(3,i)
+      end do
+
+      !do l=1,nes
+      !  write(iw,*) l,eid(l*2),nodex_s(l,1),nodex_s(l,2),nodex_s(l,3),nodex_s(l,4)
+      !end do
+
+    close(iw)
+ 
  
     Number_EDesignArea = 0
      do i = 1,Number_Element
